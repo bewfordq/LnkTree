@@ -1,108 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>bewford</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #232946 0%, #1e1e2f 100%);
-    }
-    .fade-in {
-      opacity: 0;
-      animation: fadeIn 1.2s ease-in forwards;
-    }
-    @keyframes fadeIn {
-      to { opacity: 1; }
-    }
-    .card {
-      box-shadow: 0 8px 32px 0 rgba(44, 62, 80, 0.15);
-      border-radius: 1rem;
-      border: 1px solid #2a2a40;
-      background: rgba(40, 44, 52, 0.98);
-    }
-    .profile-img {
-      transition: box-shadow 0.3s;
-    }
-    .profile-img:hover {
-      box-shadow: 0 0 0 4px #3b82f6, 0 8px 32px 0 rgba(44,62,80,0.15);
-    }
-    .social-link {
-      transition: color 0.2s, text-decoration-color 0.2s;
-      text-decoration-color: #3b82f6;
-    }
-    .social-link:hover {
-      color: #60a5fa;
-      text-decoration-color: #60a5fa;
-    }
-  </style>
-</head>
-<body class="min-h-screen flex flex-col items-center bg-gray-900 text-gray-100">
-  <!-- Header -->
-  <header class="w-full max-w-4xl mx-auto px-6 py-8 flex items-center gap-6">
-    <img src="https://github.com/bewfordq/LnkTree/blob/main/docs/fspfp.jpg?raw=true"
-      alt="Profile picture" class="profile-img w-16 h-16 object-cover rounded-full border-2 border-blue-400 shadow" />
-    <div>
-      <h1 class="text-3xl font-bold text-blue-400 drop-shadow">bewford</h1>
-      <p class="text-gray-300 mt-1">Cyber Security Student &middot; Freaklord &middot; Gooner</p>
-    </div>
-  </header>
-  <!-- Main Content -->
-  <main class="w-full max-w-4xl mx-auto px-6 py-8 grid md:grid-cols-3 gap-8">
-    <!-- About Section -->
-    <section class="card md:col-span-2 p-8 fade-in">
-      <h2 class="text-2xl font-semibold mb-4 text-blue-300">About Me</h2>
-      <p class="mb-4 text-gray-200">
-        I'm Bewford. I study cyber security, play Minecraft, and spend way too much time online. I like building things, learning new stuff, and occasionally making a mess in group chats.
-      </p>
-      <h3 class="text-xl font-semibold mb-2 text-blue-300">Interests</h3>
-      <ul class="list-disc list-inside text-gray-200 mb-4">
-        <li>Shitposting</li>
-        <li>Femboys and twinks</li>
-        <li>Minecraft</li>
-        <li>Ragebait</li>
-      </ul>
-      <h3 class="text-xl font-semibold mb-2 text-blue-300">Socials</h3>
-      <ul class="mb-4 space-y-2">
-        <li>
-          <a href="https://www.instagram.com/bewfordx3/" class="social-link text-blue-400 underline hover:text-blue-300">Instagram</a>
-        </li>
-        <li>
-          <a href="https://steamcommunity.com/id/bewford/" class="social-link text-blue-400 underline hover:text-blue-300">Steam</a>
-        </li>
-        <li>
-          <a href="https://github.com/bewfordq" class="social-link text-blue-400 underline hover:text-blue-300">GitHub</a>
-        </li>
-        <li>
-          <a href="https://tryhackme.com/p/bewpoo#" class="social-link text-blue-400 underline hover:text-blue-300">TryHackMe</a>
-        </li>
-      </ul>
-      <h3 class="text-xl font-semibold mb-2 text-blue-300">Contact</h3>
-      <p class="text-gray-200">
-        Reach me on <a href="https://t.me/bewford" class="social-link text-blue-400 underline hover:text-blue-300">Telegram</a><br>
-        Or join my <a href="https://t.me/bewfordtoilet" class="social-link text-blue-400 underline hover:text-blue-300">Telegram group</a>
-      </p>
-    </section>
-    <!-- Profile Image & Minecraft Accounts -->
-    <aside class="flex flex-col items-center justify-start">
-      <img src="https://github.com/bewfordq/LnkTree/blob/main/docs/re-zero-felix-trap-character-explained-wallpaper-727x1030-1881744376.jpg?raw=true"
-        alt="Felix" class="w-40 h-56 object-cover rounded-xl shadow-lg border-2 border-blue-400 bg-gray-800 mb-6 fade-in" />
-      <div class="card shadow p-4 w-full text-center fade-in">
-        <h4 class="text-lg font-semibold text-blue-300 mb-2">Silly Minecraft Accounts</h4>
-        <ul class="space-y-2">
-          <li><a href="https://namemc.com/profile/LordBewford.1" class="social-link text-blue-400 underline hover:text-blue-300">lordbewford</a></li>
-          <li><a href="https://namemc.com/profile/nya_catgirlpee" class="social-link text-blue-400 underline hover:text-blue-300">nya_catgirlpee</a></li>
-          <li><a href="https://namemc.com/profile/cutiebewie" class="social-link text-blue-400 underline hover:text-blue-300">cutiebewie</a></li>
-        </ul>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>bewford</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+      body {
+        font-family: 'Inter', sans-serif;
+        background: linear-gradient(135deg, #232946 0%, #1e1e2f 100%);
+      }
+      .fade-in {
+        opacity: 0;
+        animation: fadeIn 1.2s ease-in forwards;
+      }
+      @keyframes fadeIn {
+        to {
+          opacity: 1;
+        }
+      }
+      .card {
+        box-shadow: 0 8px 32px 0 rgba(44, 62, 80, 0.15);
+        border-radius: 1rem;
+        border: 1px solid #2a2a40;
+        background: rgba(40, 44, 52, 0.98);
+      }
+      .profile-img {
+        transition: box-shadow 0.3s;
+      }
+      .profile-img:hover {
+        box-shadow: 0 0 0 4px #3b82f6, 0 8px 32px 0 rgba(44,62,80,0.15);
+      }
+      .social-link {
+        transition: color 0.2s, text-decoration-color 0.2s;
+        text-decoration-color: #3b82f6;
+      }
+      .social-link:hover {
+        color: #60a5fa;
+        text-decoration-color: #60a5fa;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen flex flex-col items-center bg-gray-900 text-gray-100">
+    <!-- Header -->
+    <header class="w-full max-w-4xl mx-auto px-6 py-8 flex items-center gap-6">
+      <img src="https://github.com/bewfordq/LnkTree/blob/main/docs/fspfp.jpg?raw=true"
+        alt="Profile picture" class="profile-img w-16 h-16 object-cover rounded-full border-2 border-blue-400 shadow" />
+      <div>
+        <h1 class="text-3xl font-bold text-blue-400 drop-shadow">bewford</h1>
+        <p class="text-gray-300 mt-1">Cyber Security Student &middot; Freaklord &middot; Gooner</p>
       </div>
-    </aside>
-  </main>
-  <!-- Footer -->
-  <footer class="w-full max-w-4xl mx-auto px-6 py-4 text-center text-gray-400 border-t border-gray-700 mt-8">
-    &copy; 2025 bewford. All rights reserved.
-  </footer>
-</body>
+    </header>
+    <!-- Main Content -->
+    <main class="w-full max-w-4xl mx-auto px-6 py-8 grid md:grid-cols-3 gap-8">
+      <!-- About Section -->
+      <section class="card md:col-span-2 p-8 fade-in">
+        <h2 class="text-2xl font-semibold mb-4 text-blue-300">About Me</h2>
+        <p class="mb-4 text-gray-200">
+          I am bewford. I am online too much. I wear skirts when i jerk off. I play hypixel skyblock. And heh... i use linux.
+        </p>
+        <h3 class="text-xl font-semibold mb-2 text-blue-300">I like</h3>
+        <ul class="list-disc list-inside text-gray-200 mb-4">
+          <li>buttholes</li>
+          <li>Shitposting</li>
+          <li>Femboys and twinks</li>
+          <li>Ragebait</li>
+        </ul>
+        <h3 class="text-xl font-semibold mb-2 text-blue-300">Socials</h3>
+        <ul class="mb-4 space-y-2">
+          <li>
+            <a href="https://www.instagram.com/bewfordx3/" class="social-link text-blue-400 underline hover:text-blue-300">Instagram</a>
+          </li>
+          <li>
+            <a href="https://steamcommunity.com/id/bewford/" class="social-link text-blue-400 underline hover:text-blue-300">Steam</a>
+          </li>
+          <li>
+            <a href="https://github.com/bewfordq" class="social-link text-blue-400 underline hover:text-blue-300">GitHub</a>
+          </li>
+          <li>
+            <a href="https://tryhackme.com/p/bewpoo#" class="social-link text-blue-400 underline hover:text-blue-300">TryHackMe</a>
+          </li>
+        </ul>
+        <h3 class="text-xl font-semibold mb-2 text-blue-300">Contact</h3>
+        <p class="text-gray-200">
+          Reach me on <a href="https://t.me/bewford" class="social-link text-blue-400 underline hover:text-blue-300">Telegram</a><br>
+          Or join my <a href="https://t.me/bewfordtoilet" class="social-link text-blue-400 underline hover:text-blue-300">Telegram group</a>
+        </p>
+      </section>
+      <!-- Profile Image & Minecraft Accounts -->
+      <aside class="flex flex-col items-center justify-start">
+        <img src="https://github.com/bewfordq/LnkTree/blob/main/docs/re-zero-felix-trap-character-explained-wallpaper-727x1030-1881744376.jpg?raw=true"
+          alt="Felix" class="w-40 h-56 object-cover rounded-xl shadow-lg border-2 border-blue-400 bg-gray-800 mb-6 fade-in" />
+        <div class="card shadow p-4 w-full text-center fade-in">
+          <h4 class="text-lg font-semibold text-blue-300 mb-2">Silly Minecraft Accounts</h4>
+          <ul class="space-y-2">
+            <li><a href="https://namemc.com/profile/LordBewford.1" class="social-link text-blue-400 underline hover:text-blue-300">lordbewford</a></li>
+            <li><a href="https://namemc.com/profile/nya_catgirlpee" class="social-link text-blue-400 underline hover:text-blue-300">nya_catgirlpee</a></li>
+            <li><a href="https://namemc.com/profile/cutiebewie" class="social-link text-blue-400 underline hover:text-blue-300">cutiebewie</a></li>
+          </ul>
+        </div>
+      </aside>
+    </main>
+    <!-- Footer -->
+    <footer class="w-full max-w-4xl mx-auto px-6 py-4 text-center text-gray-400 border-t border-gray-700 mt-8">
+      &copy; 2025 bewford. All rights reserved.
+    </footer>
+  </body>
 </html>
