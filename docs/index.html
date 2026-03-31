@@ -4,110 +4,1001 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>bewford</title>
-  <!-- Tailwind & Fonts -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+  <noscript>
+    <style>
+      .reveal { opacity: 1 !important; transform: none !important; }
+    </style>
+  </noscript>
   <style>
+    :root {
+      --bg: #071116;
+      --bg-alt: #0d1623;
+      --panel: rgba(8, 18, 24, 0.84);
+      --panel-strong: rgba(9, 20, 27, 0.94);
+      --line: rgba(117, 211, 186, 0.18);
+      --line-strong: rgba(144, 210, 255, 0.26);
+      --ink: #ebf6f2;
+      --muted: #aac4bc;
+      --accent: #75d3ba;
+      --accent-cold: #90d2ff;
+      --accent-warm: #ffb37a;
+      --shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
+      --radius: 28px;
+      --radius-sm: 18px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; font-size: clamp(16px, 0.22vw + 15.4px, 17.5px); }
+
     body {
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #232946 0%, #1e1e2f 100%);
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Space Grotesk", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 14% 14%, rgba(117, 211, 186, 0.18), transparent 24%),
+        radial-gradient(circle at 84% 18%, rgba(144, 210, 255, 0.18), transparent 22%),
+        radial-gradient(circle at 50% 118%, rgba(255, 179, 122, 0.12), transparent 26%),
+        linear-gradient(135deg, #081118 0%, var(--bg-alt) 48%, #170f21 100%);
+      overflow-x: hidden;
+      position: relative;
     }
-    .fade-in {
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: -8%;
+      background:
+        radial-gradient(circle at 22% 28%, rgba(117, 211, 186, 0.16), transparent 18%),
+        radial-gradient(circle at 74% 70%, rgba(255, 179, 122, 0.14), transparent 18%),
+        conic-gradient(from 210deg at 50% 50%, rgba(255, 255, 255, 0.03), transparent 18%, rgba(117, 211, 186, 0.04) 42%, transparent 60%, rgba(144, 210, 255, 0.05) 78%, transparent 100%);
+      opacity: 0.9;
+      pointer-events: none;
+      z-index: -2;
+      transform: rotate(-6deg) scale(1.05);
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        linear-gradient(120deg, rgba(255, 255, 255, 0.025), transparent 28%),
+        linear-gradient(300deg, rgba(117, 211, 186, 0.04), transparent 24%),
+        repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.028) 0 1px, transparent 1px 96px),
+        repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.02) 0 1px, transparent 1px 96px);
+      opacity: 0.18;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    a { color: inherit; }
+    button { font: inherit; }
+    img { max-width: 100%; }
+
+    /* ── Scroll progress ── */
+    .scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 2px;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--accent-cold));
+      z-index: 1000;
+      transition: width 0.08s linear;
+    }
+
+    /* ── Nav ── */
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 0.65rem 0;
+      transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+      border-bottom: 1px solid transparent;
+    }
+
+    .site-nav.scrolled {
+      background: rgba(7, 17, 22, 0.88);
+      backdrop-filter: blur(18px);
+      border-bottom-color: rgba(117, 211, 186, 0.12);
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+    }
+
+    .nav-inner {
+      width: min(1040px, calc(100% - 1.5rem));
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.92rem;
+      color: var(--accent);
+      letter-spacing: 0.06em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .nav-links a {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.82rem;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--ink);
+    }
+
+    /* ── Page shell ── */
+    .page-shell {
+      width: min(1040px, calc(100% - 1.5rem));
+      margin: 0 auto;
+      padding: 1.25rem 0 2.4rem;
+    }
+
+    .page-content {
+      display: grid;
+      gap: 0.95rem;
+    }
+
+    /* ── Panel base ── */
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, var(--panel-strong), var(--panel));
+      backdrop-filter: blur(16px);
+      box-shadow: var(--shadow);
+    }
+
+    /* ── Hero ── */
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(220px, 260px) minmax(0, 1fr);
+      gap: clamp(1.15rem, 2.8vw, 2rem);
+      align-items: center;
+      width: min(100%, 900px);
+      justify-self: center;
+      padding: clamp(1.2rem, 2.4vw, 1.7rem);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 16% 24%, rgba(117, 211, 186, 0.16), transparent 26%),
+        linear-gradient(120deg, rgba(255, 255, 255, 0.028), transparent 34%);
+      pointer-events: none;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 18rem;
+      height: 18rem;
+      top: -5rem;
+      right: -4rem;
+      background: radial-gradient(circle, rgba(144, 210, 255, 0.16), transparent 65%);
+      pointer-events: none;
+    }
+
+    .hero-media {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-portrait {
+      position: relative;
+      aspect-ratio: 1 / 1;
+      border-radius: 24px;
+      overflow: hidden;
+      border: 1px solid rgba(144, 210, 255, 0.26);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent), #10202a;
+      box-shadow: 0 28px 60px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+
+    .hero-portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .hero-bugcat {
+      position: absolute;
+      right: -0.6rem;
+      bottom: -0.8rem;
+      width: clamp(72px, 18vw, 104px);
+      filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.3));
+      transform: rotate(-8deg);
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .hero-copy {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      gap: 0.7rem;
+      align-content: center;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(2.9rem, 7vw, 4.9rem);
+      line-height: 0.94;
+      letter-spacing: -0.05em;
+      text-wrap: balance;
+    }
+
+    .lede {
+      margin: 0;
+      max-width: 26ch;
+      color: #dcece6;
+      font-size: clamp(0.98rem, 2vw, 1.14rem);
+      line-height: 1.6;
+    }
+
+    /* ── Status badge ── */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.35rem 0.75rem;
+      border: 1px solid rgba(117, 211, 186, 0.2);
+      border-radius: 999px;
+      background: rgba(117, 211, 186, 0.08);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.78rem;
+      color: #d8fff4;
+      letter-spacing: 0.04em;
+      width: max-content;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 6px var(--accent);
+      animation: pulse 2s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; box-shadow: 0 0 6px var(--accent); }
+      50% { opacity: 0.45; box-shadow: 0 0 2px var(--accent); }
+    }
+
+    /* ── Section panel ── */
+    .section-panel {
+      position: relative;
+      width: min(100%, 930px);
+      justify-self: center;
+      padding: 1.35rem;
+      overflow: hidden;
+    }
+
+    .section-panel::after {
+      content: "";
+      position: absolute;
+      width: 15rem;
+      height: 15rem;
+      right: -6rem;
+      bottom: -7rem;
+      background: radial-gradient(circle, rgba(144, 210, 255, 0.08), transparent 70%);
+      pointer-events: none;
+    }
+
+    .section-head {
+      position: relative;
+      z-index: 1;
+      margin-bottom: 1rem;
+      padding-bottom: 0.85rem;
+      border-bottom: 1px solid rgba(144, 210, 255, 0.12);
+    }
+
+    .section-head h2 {
+      margin: 0;
+      color: var(--ink);
+      font-size: 1.45rem;
+      line-height: 1.1;
+    }
+
+    .section-copy {
+      position: relative;
+      z-index: 1;
+      margin: 0 0 1rem;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 60ch;
+    }
+
+    /* ── Detail grid ── */
+    .detail-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.9rem;
+    }
+
+    .detail-grid > div {
+      display: grid;
+      gap: 0.85rem;
+      align-content: start;
+    }
+
+    .detail-grid h3 {
+      margin: 0;
+      font-size: 0.98rem;
+      color: var(--ink);
+      letter-spacing: 0.02em;
+    }
+
+    /* ── Tags ── */
+    .tag-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.75rem;
+    }
+
+    .tag {
+      display: flex;
+      align-items: center;
+      min-height: 2.85rem;
+      padding: 0.7rem 0.85rem;
+      border: 1px solid rgba(117, 211, 186, 0.14);
+      border-radius: var(--radius-sm);
+      background: rgba(117, 211, 186, 0.08);
+      color: #e5faf3;
+      line-height: 1.4;
+    }
+
+    /* ── Currently cards ── */
+    .currently-stack {
+      display: grid;
+      gap: 0.65rem;
+    }
+
+    .currently-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding: 0.75rem 0.9rem;
+      border: 1px solid rgba(117, 211, 186, 0.12);
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.025);
+    }
+
+    .currently-label {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.74rem;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+
+    .currently-value {
+      color: var(--ink);
+      font-size: 0.93rem;
+      font-weight: 500;
+      text-align: right;
+    }
+
+    /* ── Socials section ── */
+    .socials-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.75rem;
+    }
+
+    .account-list {
+      display: grid;
+      gap: 0.75rem;
+      align-content: start;
+    }
+
+    .account-link,
+    .account-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      min-height: 3rem;
+      padding: 0.8rem 0.95rem;
+      border: 1px solid rgba(144, 210, 255, 0.12);
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.025);
+    }
+
+    .account-card {
+      background: linear-gradient(135deg, rgba(117, 211, 186, 0.12), rgba(144, 210, 255, 0.08));
+    }
+
+    .account-link {
+      text-decoration: none;
+      transition: transform 0.24s ease, border-color 0.24s ease, background 0.24s ease;
+    }
+
+    .account-link:hover,
+    .account-link:focus-visible {
+      transform: translateY(-3px);
+      border-color: var(--line-strong);
+      background: rgba(255, 255, 255, 0.05);
+      outline: none;
+    }
+
+    .account-name {
+      color: var(--ink);
+      font-weight: 500;
+      line-height: 1.4;
+    }
+
+    .account-cta {
+      color: var(--accent-cold);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.86rem;
+      letter-spacing: 0.02em;
+      flex-shrink: 0;
+    }
+
+    /* ── CTA button ── */
+    .cta-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 3.2rem;
+      padding: 0.9rem 1.25rem;
+      border: 1px solid rgba(117, 211, 186, 0.3);
+      border-radius: 999px;
+      background: linear-gradient(135deg, #7ce0c7 0%, #9bdcff 100%);
+      color: #071116;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: 0 18px 35px rgba(117, 211, 186, 0.22);
+      transition: transform 0.24s ease, box-shadow 0.24s ease, filter 0.24s ease;
+    }
+
+    .cta-button:hover,
+    .cta-button:focus-visible {
+      transform: translateY(-2px);
+      box-shadow: 0 24px 42px rgba(117, 211, 186, 0.3);
+      filter: saturate(1.06);
+      outline: none;
+    }
+
+    /* ── Showcase / Project ── */
+    .showcase {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(280px, 0.9fr);
+      gap: clamp(1rem, 2.4vw, 1.6rem);
+      align-items: center;
+      width: min(100%, 930px);
+      justify-self: center;
+      padding: clamp(1.35rem, 2.6vw, 1.9rem);
+      position: relative;
+      overflow: hidden;
+      scroll-margin-top: 1.25rem;
+    }
+
+    .showcase::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(120deg, rgba(255, 255, 255, 0.025), transparent 28%),
+        radial-gradient(circle at 82% 18%, rgba(144, 210, 255, 0.12), transparent 28%);
+      pointer-events: none;
+    }
+
+    .showcase::after {
+      content: "";
+      position: absolute;
+      inset: auto auto -6rem -5rem;
+      width: 16rem;
+      height: 16rem;
+      background: radial-gradient(circle, rgba(117, 211, 186, 0.14), transparent 68%);
+      pointer-events: none;
+    }
+
+    .showcase-copy {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      gap: 1rem;
+      align-content: center;
+    }
+
+    .showcase-kicker {
+      display: inline-flex;
+      width: max-content;
+      align-items: center;
+      min-height: 2.2rem;
+      padding: 0.45rem 0.8rem;
+      border: 1px solid rgba(117, 211, 186, 0.18);
+      border-radius: 999px;
+      background: rgba(117, 211, 186, 0.08);
+      color: #d8fff4;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.82rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .showcase-title {
+      margin: 0;
+      max-width: 11ch;
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      line-height: 0.92;
+      letter-spacing: -0.05em;
+    }
+
+    .showcase-text {
+      margin: 0;
+      max-width: 38ch;
+      color: #dcece6;
+      font-size: clamp(0.98rem, 1.9vw, 1.08rem);
+      line-height: 1.68;
+    }
+
+    .showcase-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      align-items: center;
+    }
+
+    .promo-alert {
+      display: inline-flex;
+      width: max-content;
+      align-items: center;
+      min-height: 2.2rem;
+      padding: 0.45rem 0.8rem;
+      border: 1px solid rgba(255, 179, 122, 0.24);
+      border-radius: 999px;
+      background: rgba(255, 179, 122, 0.08);
+      color: #ffe0c4;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.82rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .promo-copy {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .promo-subhead {
+      margin: 0.1rem 0 0;
+      color: var(--ink);
+      font-size: 0.98rem;
+      line-height: 1.4;
+    }
+
+    .promo-list {
+      margin: 0;
+      padding-left: 1.2rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .promo-list li + li { margin-top: 0.55rem; }
+
+    .promo-disclaimer {
+      margin: 0;
+      padding: 0.9rem 1rem;
+      border: 1px solid rgba(255, 179, 122, 0.16);
+      border-radius: var(--radius-sm);
+      background: rgba(255, 179, 122, 0.06);
+      color: #f6d7c2;
+      line-height: 1.7;
+    }
+
+    .promo-note {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.65;
+    }
+
+    /* ── Bugcat panel ── */
+    .bugcat-panel {
+      display: grid;
+      gap: 0.8rem;
+      padding: 0.2rem;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .bugcat-panel::after {
+      content: "";
+      position: absolute;
+      inset: auto -2.5rem -3rem auto;
+      width: 10rem;
+      height: 10rem;
+      background: radial-gradient(circle, rgba(117, 211, 186, 0.18), transparent 70%);
+      pointer-events: none;
+    }
+
+    .bugcat-gif {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      position: relative;
+      z-index: 1;
+      image-rendering: auto;
+      filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.28));
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .bugcat-tile:hover .bugcat-gif,
+    .bugcat-main:hover .bugcat-gif {
+      transform: scale(1.08) rotate(3deg);
+    }
+
+    .bugcat-main {
+      display: grid;
+      place-items: center;
+      min-height: 190px;
+      padding: 0.8rem;
+      border: 1px solid rgba(144, 210, 255, 0.12);
+      border-radius: calc(var(--radius-sm) + 2px);
+      background: rgba(255, 255, 255, 0.025);
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .bugcat-main .bugcat-gif {
+      width: min(220px, 100%);
+      height: auto;
+    }
+
+    .bugcat-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.8rem;
+    }
+
+    .bugcat-tile {
+      display: grid;
+      place-items: center;
+      min-height: 112px;
+      padding: 0.55rem;
+      border: 1px solid rgba(144, 210, 255, 0.12);
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.025);
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .bugcat-tile-wide {
+      grid-column: 1 / -1;
+      min-height: 122px;
+    }
+
+    .bugcat-tile .bugcat-gif {
+      width: min(100%, 140px);
+    }
+
+    /* ── Footer ── */
+    .site-footer {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--muted);
+      font-size: 0.93rem;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .footer-links a {
+      color: var(--muted);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.8rem;
+      text-decoration: none;
+      letter-spacing: 0.03em;
+      transition: color 0.2s ease;
+    }
+
+    .footer-links a:hover { color: var(--accent); }
+
+    /* ── Reveal ── */
+    .reveal {
       opacity: 0;
-      animation: fadeIn 1.2s ease-in forwards;
+      transform: translateY(20px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
     }
-    @keyframes fadeIn {
-      to { opacity: 1; }
+
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
     }
-    .card {
-      box-shadow: 0 8px 32px 0 rgba(44, 62, 80, 0.15);
-      border-radius: 1rem;
-      border: 1px solid #2a2a40;
-      background: rgba(40, 44, 52, 0.98);
+
+    /* ── Responsive ── */
+    @media (max-width: 960px) {
+      .showcase,
+      .hero,
+      .detail-grid,
+      .tag-grid,
+      .bugcat-grid,
+      .socials-grid {
+        grid-template-columns: 1fr;
+      }
     }
-    .profile-img {
-      transition: box-shadow 0.3s;
+
+    @media (max-width: 720px) {
+      .page-shell {
+        width: min(calc(100% - 1rem), 1040px);
+        padding-top: 1rem;
+      }
+
+      .hero, .showcase, .section-panel {
+        padding: 1.1rem;
+      }
+
+      .hero h1 {
+        font-size: clamp(2.6rem, 15vw, 4rem);
+      }
+
+      .hero-bugcat {
+        right: -0.35rem;
+        bottom: -0.55rem;
+        width: 78px;
+      }
+
+      .account-link, .account-card {
+        align-items: flex-start;
+      }
+
+      .cta-button {
+        width: 100%;
+      }
+
+      .nav-links {
+        gap: 1rem;
+      }
     }
-    .profile-img:hover {
-      box-shadow: 0 0 0 4px #3b82f6, 0 8px 32px 0 rgba(44,62,80,0.15);
-    }
-    .social-link {
-      transition: color 0.2s, text-decoration-color 0.2s;
-      text-decoration-color: #3b82f6;
-    }
-    .social-link:hover {
-      color: #60a5fa;
-      text-decoration-color: #60a5fa;
+
+    @media (max-width: 480px) {
+      .nav-links a { font-size: 0.72rem; }
     }
   </style>
 </head>
-<body class="min-h-screen flex flex-col items-center bg-gray-900 text-gray-100">
+<body>
+  <div class="scroll-progress" id="scrollProgress"></div>
 
-  <!-- Domain lost banner -->
-  <div class="w-full bg-blue-900/30 border-b border-blue-800 py-3 px-4 text-center text-sm md:text-base backdrop-blur-sm">
-    <span class="font-medium">i lost the bewford.gay domain (yikes). now im on basic github pages bc i'm poor and it's free.</span>
+  <nav class="site-nav" id="siteNav">
+    <div class="nav-inner">
+      <span class="nav-logo">bewford</span>
+      <div class="nav-links">
+        <a href="#about" class="nav-link">About</a>
+        <a href="#socials" class="nav-link">Socials</a>
+        <a href="#projects" class="nav-link">Projects</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="page-shell">
+    <main class="page-content">
+
+      <!-- Hero -->
+      <section class="hero panel reveal" id="home">
+        <div class="hero-media">
+          <div class="hero-portrait">
+            <img src="honksho.jpg" alt="Profile picture" />
+          </div>
+          <img src="bugcat-sticker-1.gif" alt="bugcat gif" class="hero-bugcat" />
+        </div>
+        <div class="hero-copy">
+          <div class="status-badge">
+            <span class="status-dot"></span>
+            Online
+          </div>
+          <h1>bewford</h1>
+          <p class="lede">Cyber Security Student · Freaklord · lowk the funniest feminine male</p>
+        </div>
+      </section>
+
+      <!-- About -->
+      <section class="section-panel panel reveal" id="about">
+        <div class="section-head">
+          <h2>About Me</h2>
+        </div>
+        <p class="section-copy">hello i am bewford. i keep getting banned on instagram. i like to play video games. i like to play minecraft and stuff</p>
+
+        <div class="detail-grid">
+          <div>
+            <h3>I like</h3>
+            <div class="tag-grid">
+              <span class="tag">buttholes</span>
+              <span class="tag">Shitposting</span>
+              <span class="tag">Femboys and twinks</span>
+              <span class="tag">Ragebait</span>
+            </div>
+          </div>
+          <div>
+            <h3>Currently</h3>
+            <div class="currently-stack">
+              <div class="currently-item">
+                <span class="currently-label">Playing</span>
+                <span class="currently-value">Minecraft</span>
+              </div>
+              <div class="currently-item">
+                <span class="currently-label">Studying</span>
+                <span class="currently-value">Cyber Security</span>
+              </div>
+              <div class="currently-item">
+                <span class="currently-label">Feeling</span>
+                <span class="currently-value">sexual</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Socials -->
+      <section class="section-panel panel reveal" id="socials">
+        <div class="section-head">
+          <h2>Socials</h2>
+        </div>
+        <div class="socials-grid">
+          <div class="account-list">
+            <div class="account-card">
+              <span class="account-name">Discord</span>
+              <span class="account-cta">@bewford</span>
+            </div>
+            <div class="account-card">
+              <span class="account-name">Telegram</span>
+              <span class="account-cta">@bewfy</span>
+            </div>
+            <a class="account-link" href="https://www.instagram.com/bewfart/" target="_blank" rel="noreferrer">
+              <span class="account-name">Instagram</span>
+              <span class="account-cta">@bewfart</span>
+            </a>
+            <a class="account-link" href="https://ko-fi.com/bewford" target="_blank" rel="noreferrer">
+              <span class="account-name">Ko-fi</span>
+              <span class="account-cta">bewford</span>
+            </a>
+          </div>
+          <div class="account-list">
+            <a class="account-link" href="https://www.youtube.com/@bewfordq" target="_blank" rel="noreferrer">
+              <span class="account-name">YouTube</span>
+              <span class="account-cta">@bewfordq</span>
+            </a>
+            <a class="account-link" href="https://steamcommunity.com/id/bewford/" target="_blank" rel="noreferrer">
+              <span class="account-name">Steam</span>
+              <span class="account-cta">bewford</span>
+            </a>
+            <a class="account-link" href="https://github.com/bewfordq" target="_blank" rel="noreferrer">
+              <span class="account-name">GitHub</span>
+              <span class="account-cta">@bewfordq</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Projects -->
+      <section class="showcase panel reveal" id="projects">
+        <div class="showcase-copy">
+          <span class="showcase-kicker">Featured Project</span>
+          <h2 class="showcase-title">Bewf Bot Open Beta</h2>
+          <span class="promo-alert">Free public alpha · UK only</span>
+          <p class="showcase-text">A Vinted-to-CeX flip bot that posts possible resale opportunities into a public Telegram channel. Users can review older flips or wait for fresh alerts, then decide whether to buy instantly, lowball the seller, cash out through CeX, or resell the item themselves.</p>
+          <p class="promo-subhead">What the bot does</p>
+          <ul class="promo-list">
+            <li>Scans Vinted listings and compares them against CeX pricing to find possible flips.</li>
+            <li>Posts the listing and CeX reference into the public Telegram so you can check the match yourself.</li>
+            <li>You can lowball the Vinted seller for more profit, or buy at the current price if the flip is still good.</li>
+            <li>Fastest route is taking the item to CeX for cash, but you can also self-sell it if you want to chase more profit.</li>
+          </ul>
+          <p class="promo-copy">It is a free alpha for review and feedback right now, not me selling the bot files.</p>
+          <p class="promo-disclaimer">Important: I am not responsible if you buy an item and it is different than the one the bot pairs it with. It is your responsibility to check it if you&apos;re buying something.</p>
+          <p class="promo-note">Self-sell upside is only a rough guide. It can use CeX retail as a fallback and does not fully account for shipping, marketplace fees, or other resale costs if you sell the item yourself.</p>
+          <div class="showcase-actions">
+            <a class="cta-button" href="https://t.me/BewfBotOpenBeta" target="_blank" rel="noreferrer">Join @BewfBotOpenBeta</a>
+          </div>
+        </div>
+
+        <div class="bugcat-panel" aria-label="bugcat gifs">
+          <div class="bugcat-main">
+            <img src="bugcat-sticker-2.gif" alt="bugcat gif" class="bugcat-gif" />
+          </div>
+          <div class="bugcat-grid">
+            <div class="bugcat-tile">
+              <img src="bugcat-sticker-3.gif" alt="bugcat gif" class="bugcat-gif" />
+            </div>
+            <div class="bugcat-tile">
+              <img src="bugcat-sticker-4.gif" alt="bugcat gif" class="bugcat-gif" />
+            </div>
+            <div class="bugcat-tile bugcat-tile-wide">
+              <img src="bugcat-sticker-1.gif" alt="bugcat gif" class="bugcat-gif" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="site-footer reveal">
+      <div class="footer-links">
+        <a href="https://www.instagram.com/bewfart/" target="_blank" rel="noreferrer">Instagram</a>
+        <a href="https://github.com/bewfordq" target="_blank" rel="noreferrer">GitHub</a>
+        <a href="https://ko-fi.com/bewford" target="_blank" rel="noreferrer">Ko-fi</a>
+        <a href="https://t.me/BewfBotOpenBeta" target="_blank" rel="noreferrer">Telegram Bot</a>
+      </div>
+      <span>&copy; 2025 bewford. All rights are mine i did it.</span>
+    </footer>
   </div>
 
-  <!-- Header with profile image and title -->
-  <header class="w-full max-w-4xl mx-auto px-6 py-8 flex items-center gap-6">
-    <img src="https://github.com/bewfordq/LnkTree/blob/main/docs/honksho.jpg?raw=true"
-         alt="Profile picture"
-         class="profile-img w-16 h-16 object-cover rounded-full border-2 border-blue-400 shadow" />
-    <div>
-      <h1 class="text-3xl font-bold text-blue-400 drop-shadow">bewford</h1>
-      <p class="text-gray-300 mt-1">Cyber Security Student · Freaklord · lowk the funniest feminine male</p>
-    </div>
-  </header>
+  <script>
+    // Scroll progress bar
+    const bar = document.getElementById("scrollProgress");
+    window.addEventListener("scroll", () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.width = (max > 0 ? (window.scrollY / max) * 100 : 0) + "%";
+    }, { passive: true });
 
-  <!-- Main content: two columns -->
-  <main class="w-full max-w-4xl mx-auto px-6 py-8 grid md:grid-cols-3 gap-8">
+    // Nav glass effect on scroll
+    const nav = document.getElementById("siteNav");
+    window.addEventListener("scroll", () => {
+      nav.classList.toggle("scrolled", window.scrollY > 40);
+    }, { passive: true });
 
-    <!-- About section (left column, spans 2) -->
-    <section class="card md:col-span-2 p-8 fade-in">
-      <h2 class="text-2xl font-semibold mb-4 text-blue-300">About Me</h2>
-      <p class="mb-4 text-gray-200">
-        hello i am bewford or bewfart or bew or all the above. i like minecraft and roblox (fully grown adult btw) i also play trackmaina and cookie clicker...
-      </p>
+    // Active nav link via IntersectionObserver
+    const sections = document.querySelectorAll("section[id]");
+    const navLinks = document.querySelectorAll(".nav-link");
+    const sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navLinks.forEach(l => l.classList.remove("active"));
+          const active = document.querySelector(`.nav-link[href="#${entry.target.id}"]`);
+          if (active) active.classList.add("active");
+        }
+      });
+    }, { threshold: 0.45 });
+    sections.forEach(s => sectionObserver.observe(s));
 
-      <h3 class="text-xl font-semibold mb-2 text-blue-300">I like</h3>
-      <ul class="list-disc list-inside text-gray-200 mb-4">
-        <li>buttholes</li>
-        <li>Shitposting</li>
-        <li>Femboys and twinks</li>
-        <li>Ragebait</li>
-      </ul>
-
-      <h3 class="text-xl font-semibold mb-2 text-blue-300">Socials</h3>
-      <ul class="mb-4 space-y-2">
-        <li><a href="https://www.instagram.com/bewfart/" class="social-link text-blue-400 underline hover:text-blue-300">Instagram</a></li>
-        <li><a href="https://ko-fi.com/bewford" class="social-link text-blue-400 underline hover:text-blue-300">Send me money for no reason</a></li>
-        <li><a href="https://www.youtube.com/@bewfordq" class="social-link text-blue-400 underline hover:text-blue-300">Youtube</a></li>
-        <li><a href="https://steamcommunity.com/id/bewford/" class="social-link text-blue-400 underline hover:text-blue-300">Steam</a></li>
-        <li><a href="https://github.com/bewfordq" class="social-link text-blue-400 underline hover:text-blue-300">GitHub</a></li>
-      </ul>
-    </section>
-
-    <!-- Sidebar: Felix image + Minecraft accounts -->
-    <aside class="flex flex-col items-center justify-start">
-      <img src="https://github.com/bewfordq/LnkTree/blob/main/docs/re-zero-felix-trap-character-explained-wallpaper-727x1030-1881744376.jpg?raw=true"
-           alt="Felix"
-           class="w-40 h-56 object-cover rounded-xl shadow-lg border-2 border-blue-400 bg-gray-800 mb-6 fade-in" />
-
-      <div class="card shadow p-4 w-full text-center fade-in">
-        <h4 class="text-lg font-semibold text-blue-300 mb-2">Silly Minecraft Accounts</h4>
-        <ul class="space-y-2">
-          <li><a href="https://namemc.com/profile/LordBewford.1" class="social-link text-blue-400 underline hover:text-blue-300">lordbewford</a></li>
-          <li><a href="https://namemc.com/profile/nya_catgirlpee" class="social-link text-blue-400 underline hover:text-blue-300">nya_catgirlpee</a></li>
-          <li><a href="https://namemc.com/profile/cutiebewie" class="social-link text-blue-400 underline hover:text-blue-300">cutiebewie</a></li>
-        </ul>
-      </div>
-    </aside>
-  </main>
-
-  <!-- Footer -->
-  <footer class="w-full max-w-4xl mx-auto px-6 py-4 text-center text-gray-400 border-t border-gray-700 mt-8">
-    &copy; 2025 bewford. All rights are mine i did it.
-  </footer>
-
+    // Staggered reveal on load
+    document.querySelectorAll(".reveal").forEach((node, index) => {
+      window.setTimeout(() => {
+        node.classList.add("is-visible");
+      }, 110 * index);
+    });
+  </script>
 </body>
 </html>
