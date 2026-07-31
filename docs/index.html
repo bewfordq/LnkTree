@@ -498,6 +498,11 @@
       gap: 1rem;
     }
 
+    /* screencaps are wider than the sticker gifs, so give them more room */
+    .rd-grid { grid-template-columns: repeat(auto-fit, minmax(175px, 1fr)); }
+    .rd-grid .cat-cell { min-height: 170px; }
+    .rd-grid .cat-cell img { width: min(100%, 240px); }
+
     .cat-cell {
       border: var(--border);
       background: var(--paper);
@@ -520,6 +525,24 @@
     .cat-cell img:active { cursor: grabbing; }
     .throwable.dragging { position: fixed; z-index: 8000; pointer-events: none; transform: scale(1.3) rotate(8deg); filter: drop-shadow(6px 10px 0 rgba(16,16,16,0.4)); }
     .cat-cell img:hover { transform: scale(1.15) rotate(-5deg); }
+
+    /* ── bottom image ── */
+    .bottom-shot {
+      margin-top: 2.6rem;
+      padding: 0.6rem;
+      border: var(--border);
+      background: #fff;
+      box-shadow: var(--hard-shadow);
+      transform: rotate(-0.6deg);
+    }
+
+    .bottom-shot.stagger.in { transform: rotate(-0.6deg); }
+
+    .bottom-shot img {
+      display: block;
+      width: 100%;
+      border: 2px solid var(--ink);
+    }
 
     /* ── footer ── */
     .site-footer {
@@ -606,6 +629,7 @@
       <div class="nav-links">
         <a href="#about" class="nav-link">About</a>
         <a href="#socials" class="nav-link">Socials</a>
+        <a href="#rdzone" class="nav-link">Dash</a>
         <a href="#catzone" class="nav-link">Cat Zone</a>
       </div>
     </div>
@@ -721,6 +745,19 @@
       </div>
     </section>
 
+    <!-- rainbow dash zone -->
+    <section class="zine zine--tilt-r zine--cyan stagger" id="rdzone">
+      <span class="zine-tab">Rainbow Dash</span>
+      <p class="cat-zone-note">// drag them around.</p>
+      <div class="cat-grid rd-grid">
+        <div class="cat-cell"><img src="rd-headphones.gif" alt="rainbow dash with headphones" class="throwable" loading="lazy" /></div>
+        <div class="cat-cell"><img src="rd-excited.gif" alt="rainbow dash excited" class="throwable" loading="lazy" /></div>
+        <div class="cat-cell"><img src="rd-smug.gif" alt="rainbow dash smug" class="throwable" loading="lazy" /></div>
+        <div class="cat-cell"><img src="rd-grumpy.gif" alt="rainbow dash grumpy" class="throwable" loading="lazy" /></div>
+        <div class="cat-cell"><img src="rd-sad.jpg" alt="rainbow dash sad" class="throwable" loading="lazy" /></div>
+      </div>
+    </section>
+
     <!-- cat zone -->
     <section class="zine zine--tilt-l zine--acid stagger" id="catzone">
       <span class="zine-tab">Cat Zone</span>
@@ -734,6 +771,11 @@
         <div class="cat-cell"><img src="bugcat-waiting.gif" alt="bugcat waiting gif" class="throwable" /></div>
       </div>
     </section>
+
+    <!-- bottom image -->
+    <div class="bottom-shot stagger">
+      <img src="are-you-sure.jpg" alt="are you sure / yes meme" loading="lazy" />
+    </div>
 
   </div>
 
@@ -818,6 +860,7 @@
     document.querySelectorAll(".throwable").forEach((cat) => {
       let tapCount = 0, tapTimer;
       const home = cat.parentElement;
+      const zone = cat.closest("section[id]").id;
       cat.addEventListener("pointerdown", (e) => {
         e.preventDefault();
         const rect = cat.getBoundingClientRect();
@@ -854,7 +897,7 @@
             tapCount++;
             clearTimeout(tapTimer);
             tapTimer = setTimeout(() => { tapCount = 0; }, 2500);
-            if (tapCount >= 10) { tapCount = 0; catRain(); }
+            if (tapCount >= 10) { tapCount = 0; catRain(RAIN_SETS[zone]); }
           }
         };
         window.addEventListener("pointermove", onMove);
@@ -863,12 +906,17 @@
     });
 
     // ───────────────────── cat rain easter egg ─────────────────────
-    const RAIN_SRC = ["bugcat.gif", "bugcat-love.gif", "bugcat-sticker-1.gif", "bugcat-sticker-2.gif", "bugcat-sticker-3.gif", "bugcat-sticker-4.gif", "bugcat-tutu.gif", "bugcat-waiting.gif"];
-    function catRain() {
+    const RAIN_SETS = {
+      catzone: ["bugcat.gif", "bugcat-love.gif", "bugcat-sticker-1.gif", "bugcat-sticker-2.gif", "bugcat-sticker-3.gif", "bugcat-sticker-4.gif", "bugcat-tutu.gif", "bugcat-waiting.gif"],
+      rdzone: ["rd-headphones.gif", "rd-excited.gif", "rd-smug.gif", "rd-grumpy.gif", "rd-sad.jpg"],
+    };
+    const RAIN_SRC = [...RAIN_SETS.catzone, ...RAIN_SETS.rdzone];
+    function catRain(sources) {
+      const pool = (sources && sources.length) ? sources : RAIN_SRC;
       for (let i = 0; i < 26; i++) {
         setTimeout(() => {
           const img = document.createElement("img");
-          img.src = RAIN_SRC[Math.floor(Math.random() * RAIN_SRC.length)];
+          img.src = pool[Math.floor(Math.random() * pool.length)];
           img.className = "rain-cat";
           img.style.left = Math.random() * 96 + "vw";
           img.style.animationDuration = 1.6 + Math.random() * 2.2 + "s";
