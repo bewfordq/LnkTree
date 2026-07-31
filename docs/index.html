@@ -606,7 +606,6 @@
       <div class="nav-links">
         <a href="#about" class="nav-link">About</a>
         <a href="#socials" class="nav-link">Socials</a>
-        <a href="#rdzone" class="nav-link">Dash</a>
         <a href="#catzone" class="nav-link">Cat Zone</a>
       </div>
     </div>
@@ -722,20 +721,6 @@
       </div>
     </section>
 
-    <!-- rainbow dash zone -->
-    <section class="zine zine--tilt-r zine--cyan stagger" id="rdzone">
-      <span class="zine-tab">Rainbow Dash</span>
-      <p class="cat-zone-note">// drag them around.</p>
-      <div class="cat-grid">
-        <div class="cat-cell"><img src="rd-cutiemark.gif" alt="rainbow dash cutie mark gif" class="throwable" /></div>
-        <div class="cat-cell"><img src="rd-bolt.gif" alt="rainbow lightning bolt gif" class="throwable" /></div>
-        <div class="cat-cell"><img src="rd-trail.gif" alt="rainbow trail gif" class="throwable" /></div>
-        <div class="cat-cell"><img src="rd-rainboom.gif" alt="sonic rainboom gif" class="throwable" /></div>
-        <div class="cat-cell"><img src="rd-cloud.gif" alt="rainbow rain cloud gif" class="throwable" /></div>
-        <div class="cat-cell"><img src="rd-swirl.gif" alt="rainbow swirl gif" class="throwable" /></div>
-      </div>
-    </section>
-
     <!-- cat zone -->
     <section class="zine zine--tilt-l zine--acid stagger" id="catzone">
       <span class="zine-tab">Cat Zone</span>
@@ -829,11 +814,10 @@
       });
     });
 
-    // ───────────────────── throwable gifs ─────────────────────
+    // ───────────────────── throwable cats ─────────────────────
     document.querySelectorAll(".throwable").forEach((cat) => {
       let tapCount = 0, tapTimer;
       const home = cat.parentElement;
-      const zone = cat.closest("section[id]").id;
       cat.addEventListener("pointerdown", (e) => {
         e.preventDefault();
         const rect = cat.getBoundingClientRect();
@@ -870,7 +854,7 @@
             tapCount++;
             clearTimeout(tapTimer);
             tapTimer = setTimeout(() => { tapCount = 0; }, 2500);
-            if (tapCount >= 10) { tapCount = 0; gifRain(RAIN_SETS[zone]); }
+            if (tapCount >= 10) { tapCount = 0; catRain(); }
           }
         };
         window.addEventListener("pointermove", onMove);
@@ -878,19 +862,13 @@
       });
     });
 
-    // ───────────────────── gif rain easter egg ─────────────────────
-    const RAIN_SETS = {
-      catzone: ["bugcat.gif", "bugcat-love.gif", "bugcat-sticker-1.gif", "bugcat-sticker-2.gif", "bugcat-sticker-3.gif", "bugcat-sticker-4.gif", "bugcat-tutu.gif", "bugcat-waiting.gif"],
-      rdzone: ["rd-cutiemark.gif", "rd-bolt.gif", "rd-trail.gif", "rd-rainboom.gif", "rd-cloud.gif", "rd-swirl.gif"],
-    };
-    const ALL_RAIN = [...RAIN_SETS.catzone, ...RAIN_SETS.rdzone];
-
-    function gifRain(sources) {
-      const src = sources && sources.length ? sources : ALL_RAIN;
+    // ───────────────────── cat rain easter egg ─────────────────────
+    const RAIN_SRC = ["bugcat.gif", "bugcat-love.gif", "bugcat-sticker-1.gif", "bugcat-sticker-2.gif", "bugcat-sticker-3.gif", "bugcat-sticker-4.gif", "bugcat-tutu.gif", "bugcat-waiting.gif"];
+    function catRain() {
       for (let i = 0; i < 26; i++) {
         setTimeout(() => {
           const img = document.createElement("img");
-          img.src = src[Math.floor(Math.random() * src.length)];
+          img.src = RAIN_SRC[Math.floor(Math.random() * RAIN_SRC.length)];
           img.className = "rain-cat";
           img.style.left = Math.random() * 96 + "vw";
           img.style.animationDuration = 1.6 + Math.random() * 2.2 + "s";
@@ -908,7 +886,7 @@
       kIdx = (e.key === KONAMI[kIdx]) ? kIdx + 1 : (e.key === KONAMI[0] ? 1 : 0);
       if (kIdx === KONAMI.length) {
         kIdx = 0;
-        gifRain(ALL_RAIN);
+        catRain();
         document.body.style.transition = "filter 0.3s ease";
         document.body.style.filter = "hue-rotate(180deg)";
         setTimeout(() => { document.body.style.filter = ""; }, 4000);
