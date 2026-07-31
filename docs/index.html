@@ -3,13 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>bewford ★ certified freaklord</title>
+  <title>bewford</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
   <noscript>
     <style>
-      #boot { display: none !important; }
       .stagger { opacity: 1 !important; transform: none !important; }
     </style>
   </noscript>
@@ -84,44 +83,6 @@
       *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
     }
 
-    /* ── boot screen ── */
-    #boot {
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      background: #060606;
-      color: var(--acid);
-      font-family: "IBM Plex Mono", monospace;
-      font-size: clamp(0.78rem, 2vw, 1rem);
-      padding: clamp(1rem, 5vw, 3rem);
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      transition: opacity 0.45s ease, visibility 0.45s ease;
-    }
-
-    #boot.done { opacity: 0; visibility: hidden; }
-
-    #boot .line { white-space: pre-wrap; line-height: 1.7; }
-    #boot .line .ok { color: var(--cyan); }
-    #boot .line .warn { color: var(--hot); }
-
-    #boot .skip {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      background: none;
-      border: 1px solid var(--acid);
-      color: var(--acid);
-      font-family: inherit;
-      font-size: 0.75rem;
-      padding: 0.4rem 0.8rem;
-      cursor: pointer;
-      letter-spacing: 0.08em;
-    }
-
-    #boot .skip:hover { background: var(--acid); color: #060606; }
-
     /* ── marquee strips ── */
     .strip {
       overflow: hidden;
@@ -138,19 +99,11 @@
     }
 
     .strip--pink { background: var(--hot); color: #fff; }
-    .strip--cyan { background: var(--cyan); }
-    .strip--tilt {
-      transform: rotate(-1.6deg) scale(1.02);
-      margin: 2.4rem -1rem;
-      box-shadow: 0 6px 0 rgba(16, 16, 16, 0.9);
-    }
 
     .strip-track {
       display: inline-block;
       animation: marquee 22s linear infinite;
     }
-
-    .strip--rev .strip-track { animation-direction: reverse; }
 
     .strip-track span { margin-right: 2.2rem; display: inline-block; }
 
@@ -602,23 +555,6 @@
       transform: rotate(-2deg);
     }
 
-    .footer-secret { opacity: 0.55; font-size: 0.72rem; margin-top: 0.9rem; }
-
-    /* ── cursor trail ── */
-    .trail-bit {
-      position: fixed;
-      z-index: 8500;
-      pointer-events: none;
-      font-size: 1rem;
-      animation: trail-pop 0.7s ease-out forwards;
-      user-select: none;
-    }
-
-    @keyframes trail-pop {
-      from { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(0deg); }
-      to { opacity: 0; transform: translate(-50%, -140%) scale(0.35) rotate(40deg); }
-    }
-
     /* cat rain */
     .rain-cat {
       position: fixed;
@@ -656,12 +592,6 @@
 </head>
 <body>
 
-  <!-- fake terminal boot -->
-  <div id="boot" aria-hidden="true">
-    <button class="skip" id="bootSkip">SKIP &gt;&gt;</button>
-    <div id="bootLines"></div>
-  </div>
-
   <div class="crt" aria-hidden="true"></div>
   <div class="grain" aria-hidden="true"></div>
 
@@ -672,7 +602,7 @@
 
   <nav class="site-nav" id="siteNav">
     <div class="nav-inner">
-      <span class="nav-logo">bewford.exe</span>
+      <span class="nav-logo">bewford</span>
       <div class="nav-links">
         <a href="#about" class="nav-link">About</a>
         <a href="#socials" class="nav-link">Socials</a>
@@ -694,7 +624,7 @@
         </p>
         <div class="status-badge">
           <span class="status-dot"></span>
-          <span id="statusText">ONLINE &amp; MENACING</span>
+          <span>online</span>
         </div>
       </div>
 
@@ -702,16 +632,11 @@
         <img src="bugcat-tutu.gif" alt="" class="hero-spin" aria-hidden="true" />
         <div class="polaroid">
           <img src="honksho.jpg" alt="bewford's profile picture" />
-          <span class="polaroid-caption">the freaklord himself ★</span>
+          <span class="polaroid-caption">@bewford</span>
         </div>
         <img src="bugcat-sticker-1.gif" alt="" class="hero-cat" aria-hidden="true" />
       </div>
     </section>
-
-    <!-- mid marquee -->
-    <div class="strip strip--cyan strip--tilt strip--rev" aria-hidden="true">
-      <div class="strip-track" id="stripMid"></div>
-    </div>
 
     <!-- about -->
     <section class="zine zine--tilt-l stagger" id="about">
@@ -749,19 +674,19 @@
     <!-- socials -->
     <section class="zine zine--tilt-r stagger" id="socials">
       <span class="zine-tab zine-tab--pink">Socials</span>
-      <p style="margin-top:0.4rem; font-family:'IBM Plex Mono',monospace; font-size:0.85rem;">tap a card. discord + telegram copy the handle. the rest yeet you to the platform.</p>
+      <p style="margin-top:0.4rem; font-family:'IBM Plex Mono',monospace; font-size:0.85rem;">discord + telegram copy the handle on tap.</p>
       <div class="link-wall">
         <button class="link-card" data-copy="@bewford" type="button">
           <span class="arrow">⧉</span>
           <span class="platform">Discord</span>
           <span class="handle">@bewford</span>
-          <span class="copy-hint">COPIED!!</span>
+          <span class="copy-hint">copied</span>
         </button>
         <button class="link-card" data-copy="@bewfy" type="button">
           <span class="arrow">⧉</span>
           <span class="platform">Telegram</span>
           <span class="handle">@bewfy</span>
-          <span class="copy-hint">COPIED!!</span>
+          <span class="copy-hint">copied</span>
         </button>
         <a class="link-card" href="https://www.instagram.com/bewfart/" target="_blank" rel="noreferrer">
           <span class="arrow">↗</span>
@@ -799,7 +724,7 @@
     <!-- cat zone -->
     <section class="zine zine--tilt-l zine--acid stagger" id="catzone">
       <span class="zine-tab">Cat Zone</span>
-      <p class="cat-zone-note">// grab a cat and throw it around. tap one 10 times for a surprise.</p>
+      <p class="cat-zone-note">// drag them around.</p>
       <div class="cat-grid">
         <div class="cat-cell"><img src="bugcat.gif" alt="bugcat gif" class="throwable" /></div>
         <div class="cat-cell"><img src="bugcat-love.gif" alt="bugcat love gif" class="throwable" /></div>
@@ -825,63 +750,18 @@
       <a href="https://www.youtube.com/@bewfordq" target="_blank" rel="noreferrer">YouTube</a>
     </div>
     <span>&copy; 2025 bewford. All rights are mine i did it.</span>
-    <div class="footer-secret">psst... try the konami code (↑↑↓↓←→←→BA)</div>
   </footer>
 
   <script>
-    // ───────────────────── boot sequence ─────────────────────
-    const bootEl = document.getElementById("boot");
-    const bootLines = document.getElementById("bootLines");
-    const BOOT_SCRIPT = [
-      "BEWFORD-OS v6.9 — bootloader",
-      "> mounting /dev/freak ............ <span class='ok'>[OK]</span>",
-      "> loading bugcat drivers ......... <span class='ok'>[OK]</span>",
-      "> checking instagram ban status .. <span class='warn'>[BANNED AGAIN]</span>",
-      "> injecting rizz.dll ............. <span class='ok'>[OK]</span>",
-      "> starting minecraft.service ..... <span class='ok'>[OK]</span>",
-      "> launching bewford.exe ..........",
-    ];
-
-    function endBoot() {
-      if (bootEl.classList.contains("done")) return;
-      bootEl.classList.add("done");
-      revealAll();
-    }
-
-    if (sessionStorage.getItem("bewf-booted")) {
-      bootEl.classList.add("done");
-      requestAnimationFrame(revealAll);
-    } else {
-      sessionStorage.setItem("bewf-booted", "1");
-      let i = 0;
-      const typeNext = () => {
-        if (i >= BOOT_SCRIPT.length) { setTimeout(endBoot, 550); return; }
-        const div = document.createElement("div");
-        div.className = "line";
-        div.innerHTML = BOOT_SCRIPT[i++];
-        bootLines.appendChild(div);
-        setTimeout(typeNext, 260 + Math.random() * 260);
-      };
-      setTimeout(typeNext, 300);
-    }
-    document.getElementById("bootSkip").addEventListener("click", endBoot);
-    bootEl.addEventListener("click", (e) => { if (e.target === bootEl) endBoot(); });
-
     // ───────────────────── stagger reveal ─────────────────────
-    let revealed = false;
-    function revealAll() {
-      if (revealed) return;
-      revealed = true;
-      document.querySelectorAll(".stagger").forEach((node, idx) => {
-        setTimeout(() => node.classList.add("in"), 130 * idx);
-      });
-    }
+    document.querySelectorAll(".stagger").forEach((node, idx) => {
+      setTimeout(() => node.classList.add("in"), 130 * idx);
+    });
 
     // ───────────────────── marquee strips ─────────────────────
     const PHRASES = {
-      stripTop: "★ bewford ★ certified freaklord ★ cyber security student ★ banned on instagram (again) ★ ",
-      stripMid: "☆ minecraft enjoyer ☆ shitposting professionally ☆ ragebait connoisseur ☆ bugcat appreciation society ☆ ",
-      stripBot: "★ thanks for scrolling ★ go touch grass ★ or don't ★ stay freaky ★ ",
+      stripTop: "★ bewford ★ cyber security student ★ minecraft ★ ",
+      stripBot: "★ bewford ★ links above ★ ",
     };
     Object.entries(PHRASES).forEach(([id, text]) => {
       const el = document.getElementById(id);
@@ -911,23 +791,7 @@
       }, 45);
     }
     megaName.addEventListener("click", scramble);
-    setTimeout(scramble, 2600);
-
-    // ───────────────────── rotating status ─────────────────────
-    const statusText = document.getElementById("statusText");
-    const STATUSES = [
-      "ONLINE & MENACING",
-      "GAMING (PROBABLY)",
-      "DODGING IG BANS",
-      "STUDYING (LIE)",
-      "PETTING BUGCAT",
-      "BEING SO FUNNY RN",
-    ];
-    let si = 0;
-    setInterval(() => {
-      si = (si + 1) % STATUSES.length;
-      statusText.textContent = STATUSES[si];
-    }, 3200);
+    setTimeout(scramble, 1200);
 
     // ───────────────────── nav active state ─────────────────────
     const navLinks = document.querySelectorAll(".nav-link");
@@ -949,23 +813,6 @@
         setTimeout(() => card.classList.remove("copied"), 900);
       });
     });
-
-    // ───────────────────── cursor sparkle trail ─────────────────────
-    const TRAIL = ["✦", "★", "✧", "♥", "☆"];
-    let lastTrail = 0;
-    window.addEventListener("pointermove", (e) => {
-      const now = performance.now();
-      if (now - lastTrail < 70) return;
-      lastTrail = now;
-      const bit = document.createElement("span");
-      bit.className = "trail-bit";
-      bit.textContent = TRAIL[Math.floor(Math.random() * TRAIL.length)];
-      bit.style.left = e.clientX + "px";
-      bit.style.top = e.clientY + "px";
-      bit.style.color = ["#ff3fa4", "#3fe8ff", "#9d5cff", "#101010"][Math.floor(Math.random() * 4)];
-      document.body.appendChild(bit);
-      setTimeout(() => bit.remove(), 700);
-    }, { passive: true });
 
     // ───────────────────── throwable cats ─────────────────────
     document.querySelectorAll(".throwable").forEach((cat) => {
