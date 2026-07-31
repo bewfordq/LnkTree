@@ -3,1005 +3,1042 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>bewford</title>
+  <title>bewford ★ certified freaklord</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
   <noscript>
     <style>
-      .reveal { opacity: 1 !important; transform: none !important; }
+      #boot { display: none !important; }
+      .stagger { opacity: 1 !important; transform: none !important; }
     </style>
   </noscript>
   <style>
     :root {
-      --bg: #071116;
-      --bg-alt: #0d1623;
-      --panel: rgba(8, 18, 24, 0.84);
-      --panel-strong: rgba(9, 20, 27, 0.94);
-      --line: rgba(117, 211, 186, 0.18);
-      --line-strong: rgba(144, 210, 255, 0.26);
-      --ink: #ebf6f2;
-      --muted: #aac4bc;
-      --accent: #75d3ba;
-      --accent-cold: #90d2ff;
-      --accent-warm: #ffb37a;
-      --shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
-      --radius: 28px;
-      --radius-sm: 18px;
+      --paper: #f2ecdd;
+      --ink: #101010;
+      --acid: #c8ff00;
+      --hot: #ff3fa4;
+      --cyan: #3fe8ff;
+      --tang: #ff7a1a;
+      --purp: #9d5cff;
+      --border: 3px solid var(--ink);
+      --hard-shadow: 7px 7px 0 var(--ink);
+      --hard-shadow-sm: 4px 4px 0 var(--ink);
     }
 
     * { box-sizing: border-box; }
 
-    html { scroll-behavior: smooth; font-size: clamp(16px, 0.22vw + 15.4px, 17.5px); }
+    html { scroll-behavior: smooth; }
 
     body {
       margin: 0;
       min-height: 100vh;
       font-family: "Space Grotesk", sans-serif;
       color: var(--ink);
-      background:
-        radial-gradient(circle at 14% 14%, rgba(117, 211, 186, 0.18), transparent 24%),
-        radial-gradient(circle at 84% 18%, rgba(144, 210, 255, 0.18), transparent 22%),
-        radial-gradient(circle at 50% 118%, rgba(255, 179, 122, 0.12), transparent 26%),
-        linear-gradient(135deg, #081118 0%, var(--bg-alt) 48%, #170f21 100%);
+      background: var(--paper);
+      background-image:
+        radial-gradient(circle at 12% 8%, rgba(200, 255, 0, 0.35), transparent 30%),
+        radial-gradient(circle at 90% 12%, rgba(63, 232, 255, 0.3), transparent 26%),
+        radial-gradient(circle at 80% 90%, rgba(255, 63, 164, 0.22), transparent 32%),
+        radial-gradient(circle at 8% 85%, rgba(157, 92, 255, 0.22), transparent 30%);
       overflow-x: hidden;
-      position: relative;
+      cursor: crosshair;
     }
 
-    body::before {
-      content: "";
-      position: fixed;
-      inset: -8%;
-      background:
-        radial-gradient(circle at 22% 28%, rgba(117, 211, 186, 0.16), transparent 18%),
-        radial-gradient(circle at 74% 70%, rgba(255, 179, 122, 0.14), transparent 18%),
-        conic-gradient(from 210deg at 50% 50%, rgba(255, 255, 255, 0.03), transparent 18%, rgba(117, 211, 186, 0.04) 42%, transparent 60%, rgba(144, 210, 255, 0.05) 78%, transparent 100%);
-      opacity: 0.9;
-      pointer-events: none;
-      z-index: -2;
-      transform: rotate(-6deg) scale(1.05);
-    }
-
-    body::after {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background:
-        linear-gradient(120deg, rgba(255, 255, 255, 0.025), transparent 28%),
-        linear-gradient(300deg, rgba(117, 211, 186, 0.04), transparent 24%),
-        repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.028) 0 1px, transparent 1px 96px),
-        repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.02) 0 1px, transparent 1px 96px);
-      opacity: 0.18;
-      pointer-events: none;
-      z-index: -1;
-    }
+    ::selection { background: var(--hot); color: #fff; }
 
     a { color: inherit; }
-    button { font: inherit; }
     img { max-width: 100%; }
 
-    /* ── Scroll progress ── */
-    .scroll-progress {
+    /* ── grain + scanlines over everything ── */
+    .crt {
       position: fixed;
-      top: 0;
-      left: 0;
-      height: 2px;
-      width: 0%;
-      background: linear-gradient(90deg, var(--accent), var(--accent-cold));
-      z-index: 1000;
-      transition: width 0.08s linear;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9000;
+      background: repeating-linear-gradient(0deg, rgba(0,0,0,0.055) 0 1px, transparent 1px 3px);
+      mix-blend-mode: multiply;
+      opacity: 0.5;
     }
 
-    /* ── Nav ── */
+    .grain {
+      position: fixed;
+      inset: -50%;
+      pointer-events: none;
+      z-index: 9001;
+      opacity: 0.07;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      animation: grain-shift 0.4s steps(4) infinite;
+    }
+
+    @keyframes grain-shift {
+      0% { transform: translate(0, 0); }
+      25% { transform: translate(-2%, 3%); }
+      50% { transform: translate(3%, -2%); }
+      75% { transform: translate(-3%, -3%); }
+      100% { transform: translate(2%, 2%); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+    }
+
+    /* ── boot screen ── */
+    #boot {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: #060606;
+      color: var(--acid);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: clamp(0.78rem, 2vw, 1rem);
+      padding: clamp(1rem, 5vw, 3rem);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      transition: opacity 0.45s ease, visibility 0.45s ease;
+    }
+
+    #boot.done { opacity: 0; visibility: hidden; }
+
+    #boot .line { white-space: pre-wrap; line-height: 1.7; }
+    #boot .line .ok { color: var(--cyan); }
+    #boot .line .warn { color: var(--hot); }
+
+    #boot .skip {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: 1px solid var(--acid);
+      color: var(--acid);
+      font-family: inherit;
+      font-size: 0.75rem;
+      padding: 0.4rem 0.8rem;
+      cursor: pointer;
+      letter-spacing: 0.08em;
+    }
+
+    #boot .skip:hover { background: var(--acid); color: #060606; }
+
+    /* ── marquee strips ── */
+    .strip {
+      overflow: hidden;
+      white-space: nowrap;
+      border-top: var(--border);
+      border-bottom: var(--border);
+      background: var(--acid);
+      padding: 0.55rem 0;
+      font-family: "Archivo Black", sans-serif;
+      font-size: clamp(0.85rem, 2.4vw, 1.15rem);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      user-select: none;
+    }
+
+    .strip--pink { background: var(--hot); color: #fff; }
+    .strip--cyan { background: var(--cyan); }
+    .strip--tilt {
+      transform: rotate(-1.6deg) scale(1.02);
+      margin: 2.4rem -1rem;
+      box-shadow: 0 6px 0 rgba(16, 16, 16, 0.9);
+    }
+
+    .strip-track {
+      display: inline-block;
+      animation: marquee 22s linear infinite;
+    }
+
+    .strip--rev .strip-track { animation-direction: reverse; }
+
+    .strip-track span { margin-right: 2.2rem; display: inline-block; }
+
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    /* ── nav ── */
     .site-nav {
       position: sticky;
-      top: 0;
-      z-index: 100;
-      padding: 0.65rem 0;
-      transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-      border-bottom: 1px solid transparent;
-    }
-
-    .site-nav.scrolled {
-      background: rgba(7, 17, 22, 0.88);
-      backdrop-filter: blur(18px);
-      border-bottom-color: rgba(117, 211, 186, 0.12);
-      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+      top: 0.8rem;
+      z-index: 500;
+      width: min(1080px, calc(100% - 1.6rem));
+      margin: 0.9rem auto 0;
     }
 
     .nav-inner {
-      width: min(1040px, calc(100% - 1.5rem));
-      margin: 0 auto;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 1rem;
+      background: var(--paper);
+      border: var(--border);
+      box-shadow: var(--hard-shadow-sm);
+      padding: 0.55rem 0.9rem;
     }
 
     .nav-logo {
-      font-family: "IBM Plex Mono", monospace;
-      font-size: 0.92rem;
-      color: var(--accent);
-      letter-spacing: 0.06em;
+      font-family: "Archivo Black", sans-serif;
+      font-size: 1rem;
+      text-transform: lowercase;
+      background: var(--ink);
+      color: var(--acid);
+      padding: 0.2rem 0.6rem;
+      transform: rotate(-2deg);
+      display: inline-block;
     }
 
-    .nav-links {
-      display: flex;
-      gap: 1.5rem;
-    }
+    .nav-links { display: flex; gap: 0.4rem; flex-wrap: wrap; }
 
     .nav-links a {
       font-family: "IBM Plex Mono", monospace;
-      font-size: 0.82rem;
-      letter-spacing: 0.04em;
-      color: var(--muted);
-      text-decoration: none;
+      font-size: 0.78rem;
+      font-weight: 700;
       text-transform: uppercase;
-      transition: color 0.2s ease;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+      padding: 0.35rem 0.6rem;
+      border: 2px solid transparent;
+      transition: transform 0.12s ease;
     }
 
-    .nav-links a:hover,
-    .nav-links a.active {
-      color: var(--ink);
+    .nav-links a:hover, .nav-links a.active {
+      border-color: var(--ink);
+      background: var(--acid);
+      transform: rotate(2deg);
+      box-shadow: 3px 3px 0 var(--ink);
     }
 
-    /* ── Page shell ── */
-    .page-shell {
-      width: min(1040px, calc(100% - 1.5rem));
+    /* ── shell ── */
+    .shell {
+      width: min(1080px, calc(100% - 1.6rem));
       margin: 0 auto;
-      padding: 1.25rem 0 2.4rem;
+      padding: 1.6rem 0 3rem;
     }
 
-    .page-content {
-      display: grid;
-      gap: 0.95rem;
-    }
-
-    /* ── Panel base ── */
-    .panel {
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: linear-gradient(180deg, var(--panel-strong), var(--panel));
-      backdrop-filter: blur(16px);
-      box-shadow: var(--shadow);
-    }
-
-    /* ── Hero ── */
+    /* ── hero ── */
     .hero {
+      position: relative;
       display: grid;
-      grid-template-columns: minmax(220px, 260px) minmax(0, 1fr);
-      gap: clamp(1.15rem, 2.8vw, 2rem);
+      grid-template-columns: minmax(0, 1.2fr) minmax(240px, 0.8fr);
+      gap: clamp(1.2rem, 3vw, 2.4rem);
       align-items: center;
-      width: min(100%, 900px);
-      justify-self: center;
-      padding: clamp(1.2rem, 2.4vw, 1.7rem);
-      position: relative;
-      overflow: hidden;
+      padding: clamp(1.4rem, 4vw, 2.8rem) 0 clamp(2rem, 5vw, 3rem);
     }
 
-    .hero::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(circle at 16% 24%, rgba(117, 211, 186, 0.16), transparent 26%),
-        linear-gradient(120deg, rgba(255, 255, 255, 0.028), transparent 34%);
-      pointer-events: none;
-    }
-
-    .hero::after {
-      content: "";
-      position: absolute;
-      width: 18rem;
-      height: 18rem;
-      top: -5rem;
-      right: -4rem;
-      background: radial-gradient(circle, rgba(144, 210, 255, 0.16), transparent 65%);
-      pointer-events: none;
-    }
-
-    .hero-media {
-      position: relative;
-      z-index: 1;
-    }
-
-    .hero-portrait {
-      position: relative;
-      aspect-ratio: 1 / 1;
-      border-radius: 24px;
-      overflow: hidden;
-      border: 1px solid rgba(144, 210, 255, 0.26);
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent), #10202a;
-      box-shadow: 0 28px 60px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.06);
-    }
-
-    .hero-portrait img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .hero-bugcat {
-      position: absolute;
-      right: -0.6rem;
-      bottom: -0.8rem;
-      width: clamp(72px, 18vw, 104px);
-      filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.3));
-      transform: rotate(-8deg);
-      z-index: 2;
-      pointer-events: none;
-    }
-
-    .hero-copy {
-      position: relative;
-      z-index: 1;
-      display: grid;
-      gap: 0.7rem;
-      align-content: center;
-    }
-
-    .hero h1 {
+    .mega-name {
       margin: 0;
-      font-size: clamp(2.9rem, 7vw, 4.9rem);
-      line-height: 0.94;
-      letter-spacing: -0.05em;
-      text-wrap: balance;
+      font-family: "Archivo Black", sans-serif;
+      font-size: clamp(3.4rem, 12vw, 8.5rem);
+      line-height: 0.86;
+      letter-spacing: -0.03em;
+      text-transform: lowercase;
+      -webkit-text-stroke: 2px var(--ink);
+      color: var(--acid);
+      text-shadow: 5px 5px 0 var(--hot), 10px 10px 0 var(--ink);
+      cursor: pointer;
+      user-select: none;
+      word-break: break-word;
     }
 
-    .lede {
-      margin: 0;
-      max-width: 26ch;
-      color: #dcece6;
-      font-size: clamp(0.98rem, 2vw, 1.14rem);
-      line-height: 1.6;
+    .mega-name:hover { animation: shake 0.3s linear infinite; }
+
+    @keyframes shake {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      25% { transform: translate(-2px, 2px) rotate(-0.5deg); }
+      50% { transform: translate(2px, -1px) rotate(0.5deg); }
+      75% { transform: translate(-1px, -2px) rotate(-0.3deg); }
     }
 
-    /* ── Status badge ── */
+    .hero-sub {
+      margin: 1.1rem 0 0;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: clamp(0.85rem, 2vw, 1.05rem);
+      font-weight: 500;
+      max-width: 44ch;
+      line-height: 1.7;
+    }
+
+    .hero-sub .hl { background: var(--cyan); padding: 0 0.35em; border: 2px solid var(--ink); display: inline-block; transform: rotate(-1deg); }
+    .hero-sub .hl--pink { background: var(--hot); color: #fff; transform: rotate(1.5deg); }
+    .hero-sub .hl--acid { background: var(--acid); transform: rotate(-2deg); }
+
     .status-badge {
       display: inline-flex;
       align-items: center;
-      gap: 0.45rem;
-      padding: 0.35rem 0.75rem;
-      border: 1px solid rgba(117, 211, 186, 0.2);
-      border-radius: 999px;
-      background: rgba(117, 211, 186, 0.08);
+      gap: 0.5rem;
+      margin-top: 1.2rem;
+      padding: 0.45rem 0.85rem;
+      background: var(--ink);
+      color: var(--acid);
       font-family: "IBM Plex Mono", monospace;
-      font-size: 0.78rem;
-      color: #d8fff4;
-      letter-spacing: 0.04em;
-      width: max-content;
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transform: rotate(-1deg);
+      box-shadow: var(--hard-shadow-sm);
     }
 
     .status-dot {
-      width: 7px;
-      height: 7px;
+      width: 9px;
+      height: 9px;
       border-radius: 50%;
-      background: var(--accent);
-      box-shadow: 0 0 6px var(--accent);
-      animation: pulse 2s ease-in-out infinite;
-      flex-shrink: 0;
+      background: var(--acid);
+      animation: blink 1.4s steps(2) infinite;
     }
 
-    @keyframes pulse {
-      0%, 100% { opacity: 1; box-shadow: 0 0 6px var(--accent); }
-      50% { opacity: 0.45; box-shadow: 0 0 2px var(--accent); }
-    }
+    @keyframes blink { 50% { opacity: 0.15; } }
 
-    /* ── Section panel ── */
-    .section-panel {
+    /* polaroid stack */
+    .polaroid-stack { position: relative; justify-self: center; }
+
+    .polaroid {
+      background: #fff;
+      border: var(--border);
+      padding: 0.7rem 0.7rem 2.4rem;
+      box-shadow: var(--hard-shadow);
+      transform: rotate(3deg);
+      width: min(280px, 68vw);
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
       position: relative;
-      width: min(100%, 930px);
-      justify-self: center;
-      padding: 1.35rem;
-      overflow: hidden;
+      z-index: 2;
     }
 
-    .section-panel::after {
-      content: "";
-      position: absolute;
-      width: 15rem;
-      height: 15rem;
-      right: -6rem;
-      bottom: -7rem;
-      background: radial-gradient(circle, rgba(144, 210, 255, 0.08), transparent 70%);
-      pointer-events: none;
-    }
+    .polaroid:hover { transform: rotate(-2deg) scale(1.04); }
 
-    .section-head {
-      position: relative;
-      z-index: 1;
-      margin-bottom: 1rem;
-      padding-bottom: 0.85rem;
-      border-bottom: 1px solid rgba(144, 210, 255, 0.12);
-    }
-
-    .section-head h2 {
-      margin: 0;
-      color: var(--ink);
-      font-size: 1.45rem;
-      line-height: 1.1;
-    }
-
-    .section-copy {
-      position: relative;
-      z-index: 1;
-      margin: 0 0 1rem;
-      color: var(--muted);
-      line-height: 1.7;
-      max-width: 60ch;
-    }
-
-    /* ── Detail grid ── */
-    .detail-grid {
-      position: relative;
-      z-index: 1;
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 0.9rem;
-    }
-
-    .detail-grid > div {
-      display: grid;
-      gap: 0.85rem;
-      align-content: start;
-    }
-
-    .detail-grid h3 {
-      margin: 0;
-      font-size: 0.98rem;
-      color: var(--ink);
-      letter-spacing: 0.02em;
-    }
-
-    /* ── Tags ── */
-    .tag-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 0.75rem;
-    }
-
-    .tag {
-      display: flex;
-      align-items: center;
-      min-height: 2.85rem;
-      padding: 0.7rem 0.85rem;
-      border: 1px solid rgba(117, 211, 186, 0.14);
-      border-radius: var(--radius-sm);
-      background: rgba(117, 211, 186, 0.08);
-      color: #e5faf3;
-      line-height: 1.4;
-    }
-
-    /* ── Currently cards ── */
-    .currently-stack {
-      display: grid;
-      gap: 0.65rem;
-    }
-
-    .currently-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.75rem;
-      padding: 0.75rem 0.9rem;
-      border: 1px solid rgba(117, 211, 186, 0.12);
-      border-radius: var(--radius-sm);
-      background: rgba(255, 255, 255, 0.025);
-    }
-
-    .currently-label {
-      font-family: "IBM Plex Mono", monospace;
-      font-size: 0.74rem;
-      color: var(--muted);
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      flex-shrink: 0;
-    }
-
-    .currently-value {
-      color: var(--ink);
-      font-size: 0.93rem;
-      font-weight: 500;
-      text-align: right;
-    }
-
-    /* ── Socials section ── */
-    .socials-grid {
-      position: relative;
-      z-index: 1;
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 0.75rem;
-    }
-
-    .account-list {
-      display: grid;
-      gap: 0.75rem;
-      align-content: start;
-    }
-
-    .account-link,
-    .account-card {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-      min-height: 3rem;
-      padding: 0.8rem 0.95rem;
-      border: 1px solid rgba(144, 210, 255, 0.12);
-      border-radius: var(--radius-sm);
-      background: rgba(255, 255, 255, 0.025);
-    }
-
-    .account-card {
-      background: linear-gradient(135deg, rgba(117, 211, 186, 0.12), rgba(144, 210, 255, 0.08));
-    }
-
-    .account-link {
-      text-decoration: none;
-      transition: transform 0.24s ease, border-color 0.24s ease, background 0.24s ease;
-    }
-
-    .account-link:hover,
-    .account-link:focus-visible {
-      transform: translateY(-3px);
-      border-color: var(--line-strong);
-      background: rgba(255, 255, 255, 0.05);
-      outline: none;
-    }
-
-    .account-name {
-      color: var(--ink);
-      font-weight: 500;
-      line-height: 1.4;
-    }
-
-    .account-cta {
-      color: var(--accent-cold);
-      font-family: "IBM Plex Mono", monospace;
-      font-size: 0.86rem;
-      letter-spacing: 0.02em;
-      flex-shrink: 0;
-    }
-
-    /* ── CTA button ── */
-    .cta-button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 3.2rem;
-      padding: 0.9rem 1.25rem;
-      border: 1px solid rgba(117, 211, 186, 0.3);
-      border-radius: 999px;
-      background: linear-gradient(135deg, #7ce0c7 0%, #9bdcff 100%);
-      color: #071116;
-      font-weight: 700;
-      text-decoration: none;
-      box-shadow: 0 18px 35px rgba(117, 211, 186, 0.22);
-      transition: transform 0.24s ease, box-shadow 0.24s ease, filter 0.24s ease;
-    }
-
-    .cta-button:hover,
-    .cta-button:focus-visible {
-      transform: translateY(-2px);
-      box-shadow: 0 24px 42px rgba(117, 211, 186, 0.3);
-      filter: saturate(1.06);
-      outline: none;
-    }
-
-    /* ── Showcase / Project ── */
-    .showcase {
-      display: grid;
-      grid-template-columns: minmax(0, 1.05fr) minmax(280px, 0.9fr);
-      gap: clamp(1rem, 2.4vw, 1.6rem);
-      align-items: center;
-      width: min(100%, 930px);
-      justify-self: center;
-      padding: clamp(1.35rem, 2.6vw, 1.9rem);
-      position: relative;
-      overflow: hidden;
-      scroll-margin-top: 1.25rem;
-    }
-
-    .showcase::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        linear-gradient(120deg, rgba(255, 255, 255, 0.025), transparent 28%),
-        radial-gradient(circle at 82% 18%, rgba(144, 210, 255, 0.12), transparent 28%);
-      pointer-events: none;
-    }
-
-    .showcase::after {
-      content: "";
-      position: absolute;
-      inset: auto auto -6rem -5rem;
-      width: 16rem;
-      height: 16rem;
-      background: radial-gradient(circle, rgba(117, 211, 186, 0.14), transparent 68%);
-      pointer-events: none;
-    }
-
-    .showcase-copy {
-      position: relative;
-      z-index: 1;
-      display: grid;
-      gap: 1rem;
-      align-content: center;
-    }
-
-    .showcase-kicker {
-      display: inline-flex;
-      width: max-content;
-      align-items: center;
-      min-height: 2.2rem;
-      padding: 0.45rem 0.8rem;
-      border: 1px solid rgba(117, 211, 186, 0.18);
-      border-radius: 999px;
-      background: rgba(117, 211, 186, 0.08);
-      color: #d8fff4;
-      font-family: "IBM Plex Mono", monospace;
-      font-size: 0.82rem;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-    }
-
-    .showcase-title {
-      margin: 0;
-      max-width: 11ch;
-      font-size: clamp(2.5rem, 6vw, 4rem);
-      line-height: 0.92;
-      letter-spacing: -0.05em;
-    }
-
-    .showcase-text {
-      margin: 0;
-      max-width: 38ch;
-      color: #dcece6;
-      font-size: clamp(0.98rem, 1.9vw, 1.08rem);
-      line-height: 1.68;
-    }
-
-    .showcase-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.8rem;
-      align-items: center;
-    }
-
-    .promo-alert {
-      display: inline-flex;
-      width: max-content;
-      align-items: center;
-      min-height: 2.2rem;
-      padding: 0.45rem 0.8rem;
-      border: 1px solid rgba(255, 179, 122, 0.24);
-      border-radius: 999px;
-      background: rgba(255, 179, 122, 0.08);
-      color: #ffe0c4;
-      font-family: "IBM Plex Mono", monospace;
-      font-size: 0.82rem;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-    }
-
-    .promo-copy {
-      margin: 0;
-      color: var(--muted);
-      line-height: 1.75;
-    }
-
-    .promo-subhead {
-      margin: 0.1rem 0 0;
-      color: var(--ink);
-      font-size: 0.98rem;
-      line-height: 1.4;
-    }
-
-    .promo-list {
-      margin: 0;
-      padding-left: 1.2rem;
-      color: var(--muted);
-      line-height: 1.65;
-    }
-
-    .promo-list li + li { margin-top: 0.55rem; }
-
-    .promo-disclaimer {
-      margin: 0;
-      padding: 0.9rem 1rem;
-      border: 1px solid rgba(255, 179, 122, 0.16);
-      border-radius: var(--radius-sm);
-      background: rgba(255, 179, 122, 0.06);
-      color: #f6d7c2;
-      line-height: 1.7;
-    }
-
-    .promo-note {
-      margin: 0;
-      color: var(--muted);
-      font-size: 0.92rem;
-      line-height: 1.65;
-    }
-
-    /* ── Bugcat panel ── */
-    .bugcat-panel {
-      display: grid;
-      gap: 0.8rem;
-      padding: 0.2rem;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .bugcat-panel::after {
-      content: "";
-      position: absolute;
-      inset: auto -2.5rem -3rem auto;
-      width: 10rem;
-      height: 10rem;
-      background: radial-gradient(circle, rgba(117, 211, 186, 0.18), transparent 70%);
-      pointer-events: none;
-    }
-
-    .bugcat-gif {
+    .polaroid img {
       display: block;
       width: 100%;
-      height: 100%;
-      object-fit: contain;
+      aspect-ratio: 1/1;
+      object-fit: cover;
+      border: 2px solid var(--ink);
+      filter: saturate(1.15) contrast(1.05);
+    }
+
+    .polaroid-caption {
+      position: absolute;
+      bottom: 0.45rem;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .hero-cat {
+      position: absolute;
+      width: clamp(80px, 16vw, 120px);
+      right: -1.6rem;
+      bottom: -1.8rem;
+      z-index: 3;
+      transform: rotate(-10deg);
+      filter: drop-shadow(4px 6px 0 rgba(16,16,16,0.55));
+      pointer-events: none;
+    }
+
+    .hero-spin {
+      position: absolute;
+      top: -2.4rem;
+      left: -2.6rem;
+      width: 96px;
+      height: 96px;
+      z-index: 3;
+      animation: spin 14s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── sections ── */
+    section[id] { scroll-margin-top: 5.5rem; }
+
+    .zine {
       position: relative;
-      z-index: 1;
-      image-rendering: auto;
-      filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.28));
-      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      border: var(--border);
+      background: #fff;
+      box-shadow: var(--hard-shadow);
+      padding: clamp(1.2rem, 3.4vw, 2.2rem);
+      margin: 2.6rem 0;
     }
 
-    .bugcat-tile:hover .bugcat-gif,
-    .bugcat-main:hover .bugcat-gif {
-      transform: scale(1.08) rotate(3deg);
+    .zine--tilt-l { transform: rotate(-0.7deg); }
+    .zine--tilt-r { transform: rotate(0.7deg); }
+    .zine--acid { background: var(--acid); }
+    .zine--cyan { background: var(--cyan); }
+
+    .zine-tab {
+      position: absolute;
+      top: -1.35rem;
+      left: 1.4rem;
+      background: var(--ink);
+      color: #fff;
+      font-family: "Archivo Black", sans-serif;
+      font-size: clamp(1rem, 2.6vw, 1.45rem);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 0.35rem 1rem;
+      transform: rotate(-2deg);
+      box-shadow: var(--hard-shadow-sm);
     }
 
-    .bugcat-main {
-      display: grid;
-      place-items: center;
-      min-height: 190px;
-      padding: 0.8rem;
-      border: 1px solid rgba(144, 210, 255, 0.12);
-      border-radius: calc(var(--radius-sm) + 2px);
-      background: rgba(255, 255, 255, 0.025);
-      overflow: hidden;
-      cursor: pointer;
-    }
+    .zine-tab--pink { background: var(--hot); color: #fff; transform: rotate(1.6deg); left: auto; right: 1.4rem; }
 
-    .bugcat-main .bugcat-gif {
-      width: min(220px, 100%);
-      height: auto;
-    }
+    .zine p { line-height: 1.75; }
 
-    .bugcat-grid {
+    .about-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 0.8rem;
+      gap: clamp(1rem, 3vw, 2rem);
+      margin-top: 1.4rem;
     }
 
-    .bugcat-tile {
+    .about-col h3 {
+      margin: 0 0 0.9rem;
+      font-family: "Archivo Black", sans-serif;
+      text-transform: uppercase;
+      font-size: 1rem;
+      letter-spacing: 0.05em;
+    }
+
+    /* sticker tags */
+    .sticker-pile { display: flex; flex-wrap: wrap; gap: 0.7rem; }
+
+    .sticker {
+      display: inline-block;
+      padding: 0.5rem 0.9rem;
+      border: var(--border);
+      font-family: "IBM Plex Mono", monospace;
+      font-weight: 700;
+      font-size: 0.85rem;
+      background: #fff;
+      box-shadow: var(--hard-shadow-sm);
+      transition: transform 0.15s ease;
+      cursor: default;
+    }
+
+    .sticker:nth-child(4n+1) { background: var(--hot); color: #fff; transform: rotate(-2deg); }
+    .sticker:nth-child(4n+2) { background: var(--cyan); transform: rotate(1.5deg); }
+    .sticker:nth-child(4n+3) { background: var(--acid); transform: rotate(-1deg); }
+    .sticker:nth-child(4n+4) { background: var(--purp); color: #fff; transform: rotate(2.4deg); }
+
+    .sticker:hover { transform: rotate(0deg) scale(1.12); z-index: 2; }
+
+    /* currently rows */
+    .stat-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.8rem;
+      border: var(--border);
+      background: var(--paper);
+      padding: 0.7rem 0.9rem;
+      margin-bottom: 0.7rem;
+      box-shadow: var(--hard-shadow-sm);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .stat-row:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--ink); }
+
+    .stat-key {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      background: var(--ink);
+      color: var(--acid);
+      padding: 0.2rem 0.5rem;
+      flex-shrink: 0;
+    }
+
+    .stat-val { font-weight: 700; text-align: right; }
+
+    /* ── socials ── */
+    .link-wall {
       display: grid;
-      place-items: center;
-      min-height: 112px;
-      padding: 0.55rem;
-      border: 1px solid rgba(144, 210, 255, 0.12);
-      border-radius: var(--radius-sm);
-      background: rgba(255, 255, 255, 0.025);
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 1rem;
+      margin-top: 1.4rem;
+    }
+
+    .link-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      border: var(--border);
+      background: #fff;
+      padding: 1rem 1.1rem;
+      text-decoration: none;
+      box-shadow: var(--hard-shadow-sm);
+      transition: transform 0.16s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.16s ease, background 0.16s ease;
       overflow: hidden;
       cursor: pointer;
     }
 
-    .bugcat-tile-wide {
-      grid-column: 1 / -1;
-      min-height: 122px;
+    .link-card:nth-child(odd) { transform: rotate(-0.8deg); }
+    .link-card:nth-child(even) { transform: rotate(0.8deg); }
+
+    .link-card:hover, .link-card:focus-visible {
+      transform: rotate(0deg) translate(-3px, -3px) scale(1.02);
+      box-shadow: 8px 8px 0 var(--ink);
+      background: var(--acid);
+      outline: none;
     }
 
-    .bugcat-tile .bugcat-gif {
-      width: min(100%, 140px);
+    .link-card .platform {
+      font-family: "Archivo Black", sans-serif;
+      text-transform: uppercase;
+      font-size: 1.02rem;
+      letter-spacing: 0.03em;
     }
 
-    /* ── Footer ── */
+    .link-card .handle {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    .link-card .arrow {
+      position: absolute;
+      top: 0.7rem;
+      right: 0.8rem;
+      font-family: "IBM Plex Mono", monospace;
+      font-weight: 700;
+      font-size: 1rem;
+      transition: transform 0.16s ease;
+    }
+
+    .link-card:hover .arrow { transform: translate(3px, -3px) rotate(45deg); }
+
+    .link-card .copy-hint {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      background: var(--hot);
+      color: #fff;
+      font-family: "Archivo Black", sans-serif;
+      text-transform: uppercase;
+      font-size: 0.95rem;
+      letter-spacing: 0.06em;
+      opacity: 0;
+      transition: opacity 0.18s ease;
+      pointer-events: none;
+    }
+
+    .link-card.copied .copy-hint { opacity: 1; }
+
+    /* ── cat zone ── */
+    .cat-zone-note {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.82rem;
+      margin: 0.2rem 0 1.2rem;
+    }
+
+    .cat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+    }
+
+    .cat-cell {
+      border: var(--border);
+      background: var(--paper);
+      box-shadow: var(--hard-shadow-sm);
+      display: grid;
+      place-items: center;
+      min-height: 150px;
+      padding: 0.7rem;
+      touch-action: none;
+    }
+
+    .cat-cell img {
+      width: min(120px, 80%);
+      cursor: grab;
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .cat-cell img:active { cursor: grabbing; }
+    .cat-cell img.dragging { position: fixed; z-index: 8000; pointer-events: none; transform: scale(1.3) rotate(8deg); filter: drop-shadow(6px 10px 0 rgba(16,16,16,0.4)); }
+    .cat-cell img:hover { transform: scale(1.15) rotate(-5deg); }
+
+    /* ── footer ── */
     .site-footer {
-      margin-top: 1rem;
-      padding-top: 1rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
-      color: var(--muted);
-      font-size: 0.93rem;
+      border-top: var(--border);
+      background: var(--ink);
+      color: var(--paper);
+      padding: 2rem 1rem 2.4rem;
       text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.6rem;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.85rem;
     }
 
     .footer-links {
       display: flex;
-      gap: 1.25rem;
+      gap: 0.6rem;
       flex-wrap: wrap;
       justify-content: center;
+      margin-bottom: 1.2rem;
     }
 
     .footer-links a {
-      color: var(--muted);
-      font-family: "IBM Plex Mono", monospace;
-      font-size: 0.8rem;
+      color: var(--paper);
       text-decoration: none;
-      letter-spacing: 0.03em;
-      transition: color 0.2s ease;
+      border: 2px solid var(--paper);
+      padding: 0.35rem 0.75rem;
+      transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
     }
 
-    .footer-links a:hover { color: var(--accent); }
-
-    /* ── Reveal ── */
-    .reveal {
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
+    .footer-links a:hover {
+      background: var(--acid);
+      color: var(--ink);
+      border-color: var(--acid);
+      transform: rotate(-2deg);
     }
 
-    .reveal.is-visible {
-      opacity: 1;
-      transform: translateY(0);
+    .footer-secret { opacity: 0.55; font-size: 0.72rem; margin-top: 0.9rem; }
+
+    /* ── cursor trail ── */
+    .trail-bit {
+      position: fixed;
+      z-index: 8500;
+      pointer-events: none;
+      font-size: 1rem;
+      animation: trail-pop 0.7s ease-out forwards;
+      user-select: none;
     }
 
-    /* ── Responsive ── */
-    @media (max-width: 960px) {
-      .showcase,
-      .hero,
-      .detail-grid,
-      .tag-grid,
-      .bugcat-grid,
-      .socials-grid {
-        grid-template-columns: 1fr;
-      }
+    @keyframes trail-pop {
+      from { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+      to { opacity: 0; transform: translate(-50%, -140%) scale(0.35) rotate(40deg); }
     }
 
-    @media (max-width: 720px) {
-      .page-shell {
-        width: min(calc(100% - 1rem), 1040px);
-        padding-top: 1rem;
-      }
-
-      .hero, .showcase, .section-panel {
-        padding: 1.1rem;
-      }
-
-      .hero h1 {
-        font-size: clamp(2.6rem, 15vw, 4rem);
-      }
-
-      .hero-bugcat {
-        right: -0.35rem;
-        bottom: -0.55rem;
-        width: 78px;
-      }
-
-      .account-link, .account-card {
-        align-items: flex-start;
-      }
-
-      .cta-button {
-        width: 100%;
-      }
-
-      .nav-links {
-        gap: 1rem;
-      }
+    /* cat rain */
+    .rain-cat {
+      position: fixed;
+      top: -160px;
+      z-index: 8600;
+      width: 90px;
+      pointer-events: none;
+      animation: rain-fall linear forwards;
     }
 
-    @media (max-width: 480px) {
-      .nav-links a { font-size: 0.72rem; }
+    @keyframes rain-fall {
+      to { transform: translateY(120vh) rotate(360deg); }
+    }
+
+    /* stagger reveal */
+    .stagger { opacity: 0; transform: translateY(26px) rotate(0.5deg); transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .stagger.in { opacity: 1; transform: translateY(0); }
+
+    /* keep the zine tilts after reveal */
+    .zine--tilt-l.stagger.in { transform: rotate(-0.7deg); }
+    .zine--tilt-r.stagger.in { transform: rotate(0.7deg); }
+
+    @media (max-width: 860px) {
+      .hero { grid-template-columns: 1fr; }
+      .polaroid-stack { margin-top: 1rem; }
+      .about-grid { grid-template-columns: 1fr; }
+      .hero-spin { left: auto; right: -1rem; top: -2rem; width: 72px; height: 72px; }
+    }
+
+    @media (max-width: 520px) {
+      .nav-links a { font-size: 0.68rem; padding: 0.3rem 0.4rem; }
+      .mega-name { text-shadow: 3px 3px 0 var(--hot), 6px 6px 0 var(--ink); }
     }
   </style>
 </head>
 <body>
-  <div class="scroll-progress" id="scrollProgress"></div>
+
+  <!-- fake terminal boot -->
+  <div id="boot" aria-hidden="true">
+    <button class="skip" id="bootSkip">SKIP &gt;&gt;</button>
+    <div id="bootLines"></div>
+  </div>
+
+  <div class="crt" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- top marquee -->
+  <div class="strip strip--pink" aria-hidden="true">
+    <div class="strip-track" id="stripTop"></div>
+  </div>
 
   <nav class="site-nav" id="siteNav">
     <div class="nav-inner">
-      <span class="nav-logo">bewford</span>
+      <span class="nav-logo">bewford.exe</span>
       <div class="nav-links">
         <a href="#about" class="nav-link">About</a>
         <a href="#socials" class="nav-link">Socials</a>
-        <a href="#projects" class="nav-link">Projects</a>
+        <a href="#catzone" class="nav-link">Cat Zone</a>
       </div>
     </div>
   </nav>
 
-  <div class="page-shell">
-    <main class="page-content">
+  <div class="shell">
 
-      <!-- Hero -->
-      <section class="hero panel reveal" id="home">
-        <div class="hero-media">
-          <div class="hero-portrait">
-            <img src="honksho.jpg" alt="Profile picture" />
-          </div>
-          <img src="bugcat-sticker-1.gif" alt="bugcat gif" class="hero-bugcat" />
+    <!-- hero -->
+    <section class="hero" id="home">
+      <div class="stagger">
+        <h1 class="mega-name" id="megaName" title="click me">bewford</h1>
+        <p class="hero-sub">
+          <span class="hl">cyber security student</span>
+          <span class="hl hl--pink">freaklord</span>
+          <span class="hl hl--acid">lowk the funniest feminine male</span>
+        </p>
+        <div class="status-badge">
+          <span class="status-dot"></span>
+          <span id="statusText">ONLINE &amp; MENACING</span>
         </div>
-        <div class="hero-copy">
-          <div class="status-badge">
-            <span class="status-dot"></span>
-            Online
-          </div>
-          <h1>bewford</h1>
-          <p class="lede">Cyber Security Student · Freaklord · lowk the funniest feminine male</p>
-        </div>
-      </section>
-
-      <!-- About -->
-      <section class="section-panel panel reveal" id="about">
-        <div class="section-head">
-          <h2>About Me</h2>
-        </div>
-        <p class="section-copy">hello i am bewford. i keep getting banned on instagram. i like to play video games. i like to play minecraft and stuff</p>
-
-        <div class="detail-grid">
-          <div>
-            <h3>I like</h3>
-            <div class="tag-grid">
-              <span class="tag">buttholes</span>
-              <span class="tag">Shitposting</span>
-              <span class="tag">Femboys and twinks</span>
-              <span class="tag">Ragebait</span>
-            </div>
-          </div>
-          <div>
-            <h3>Currently</h3>
-            <div class="currently-stack">
-              <div class="currently-item">
-                <span class="currently-label">Playing</span>
-                <span class="currently-value">Minecraft</span>
-              </div>
-              <div class="currently-item">
-                <span class="currently-label">Studying</span>
-                <span class="currently-value">Cyber Security</span>
-              </div>
-              <div class="currently-item">
-                <span class="currently-label">Feeling</span>
-                <span class="currently-value">sexual</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Socials -->
-      <section class="section-panel panel reveal" id="socials">
-        <div class="section-head">
-          <h2>Socials</h2>
-        </div>
-        <div class="socials-grid">
-          <div class="account-list">
-            <div class="account-card">
-              <span class="account-name">Discord</span>
-              <span class="account-cta">@bewford</span>
-            </div>
-            <div class="account-card">
-              <span class="account-name">Telegram</span>
-              <span class="account-cta">@bewfy</span>
-            </div>
-            <a class="account-link" href="https://www.instagram.com/bewfart/" target="_blank" rel="noreferrer">
-              <span class="account-name">Instagram</span>
-              <span class="account-cta">@bewfart</span>
-            </a>
-            <a class="account-link" href="https://ko-fi.com/bewford" target="_blank" rel="noreferrer">
-              <span class="account-name">Ko-fi</span>
-              <span class="account-cta">bewford</span>
-            </a>
-          </div>
-          <div class="account-list">
-            <a class="account-link" href="https://www.youtube.com/@bewfordq" target="_blank" rel="noreferrer">
-              <span class="account-name">YouTube</span>
-              <span class="account-cta">@bewfordq</span>
-            </a>
-            <a class="account-link" href="https://steamcommunity.com/id/bewford/" target="_blank" rel="noreferrer">
-              <span class="account-name">Steam</span>
-              <span class="account-cta">bewford</span>
-            </a>
-            <a class="account-link" href="https://github.com/bewfordq" target="_blank" rel="noreferrer">
-              <span class="account-name">GitHub</span>
-              <span class="account-cta">@bewfordq</span>
-            </a>
-             <a class="account-link" href="https://x.com/bewfart" target="_blank" rel="noreferrer">
-              <span class="account-name">Twitter / x</span>
-              <span class="account-cta">@bewfart</span>
-            </a>
-          </div>
-        </div>
-      </section>
-
-      <!-- Projects -->
-      <section class="showcase panel reveal" id="projects">
-        <div class="showcase-copy">
-          <span class="showcase-kicker">Featured Project</span>
-          <h2 class="showcase-title">Bewf Bot Open Beta</h2>
-          <span class="promo-alert">Free public alpha · UK only</span>
-          <p class="showcase-text">A Vinted-to-CeX flip bot that posts possible resale opportunities into a public Telegram channel. Users can review older flips or wait for fresh alerts, then decide whether to buy instantly, lowball the seller, cash out through CeX, or resell the item themselves.</p>
-          <p class="promo-subhead">What the bot does</p>
-          <ul class="promo-list">
-            <li>Scans Vinted listings and compares them against CeX pricing to find possible flips.</li>
-            <li>Posts the listing and CeX reference into the public Telegram so you can check the match yourself.</li>
-            <li>You can lowball the Vinted seller for more profit, or buy at the current price if the flip is still good.</li>
-            <li>Fastest route is taking the item to CeX for cash, but you can also self-sell it if you want to chase more profit.</li>
-          </ul>
-          <p class="promo-copy">It is a free alpha for review and feedback right now, not me selling the bot files.</p>
-          <p class="promo-disclaimer">Important: I am not responsible if you buy an item and it is different than the one the bot pairs it with. It is your responsibility to check it if you&apos;re buying something.</p>
-          <p class="promo-note">Self-sell upside is only a rough guide. It can use CeX retail as a fallback and does not fully account for shipping, marketplace fees, or other resale costs if you sell the item yourself.</p>
-          <div class="showcase-actions">
-            <a class="cta-button" href="https://t.me/BewfBotOpenBeta" target="_blank" rel="noreferrer">Join @BewfBotOpenBeta</a>
-          </div>
-        </div>
-
-        <div class="bugcat-panel" aria-label="bugcat gifs">
-          <div class="bugcat-main">
-            <img src="bugcat-sticker-2.gif" alt="bugcat gif" class="bugcat-gif" />
-          </div>
-          <div class="bugcat-grid">
-            <div class="bugcat-tile">
-              <img src="bugcat-sticker-3.gif" alt="bugcat gif" class="bugcat-gif" />
-            </div>
-            <div class="bugcat-tile">
-              <img src="bugcat-sticker-4.gif" alt="bugcat gif" class="bugcat-gif" />
-            </div>
-            <div class="bugcat-tile bugcat-tile-wide">
-              <img src="bugcat-sticker-1.gif" alt="bugcat gif" class="bugcat-gif" />
-            </div>
-          </div>
-        </div>
-      </section>
-
-    </main>
-
-    <footer class="site-footer reveal">
-      <div class="footer-links">
-        <a href="https://www.instagram.com/bewfart/" target="_blank" rel="noreferrer">Instagram</a>
-        <a href="https://github.com/bewfordq" target="_blank" rel="noreferrer">GitHub</a>
-        <a href="https://ko-fi.com/bewford" target="_blank" rel="noreferrer">Ko-fi</a>
-        <a href="https://t.me/BewfBotOpenBeta" target="_blank" rel="noreferrer">Telegram Bot</a>
       </div>
-      <span>&copy; 2025 bewford. All rights are mine i did it.</span>
-    </footer>
+
+      <div class="polaroid-stack stagger">
+        <img src="bugcat-tutu.gif" alt="" class="hero-spin" aria-hidden="true" />
+        <div class="polaroid">
+          <img src="honksho.jpg" alt="bewford's profile picture" />
+          <span class="polaroid-caption">the freaklord himself ★</span>
+        </div>
+        <img src="bugcat-sticker-1.gif" alt="" class="hero-cat" aria-hidden="true" />
+      </div>
+    </section>
+
+    <!-- mid marquee -->
+    <div class="strip strip--cyan strip--tilt strip--rev" aria-hidden="true">
+      <div class="strip-track" id="stripMid"></div>
+    </div>
+
+    <!-- about -->
+    <section class="zine zine--tilt-l stagger" id="about">
+      <span class="zine-tab">About Me</span>
+      <p>hello i am bewford. i keep getting banned on instagram. i like to play video games. i like to play minecraft and stuff</p>
+
+      <div class="about-grid">
+        <div class="about-col">
+          <h3>// i like</h3>
+          <div class="sticker-pile">
+            <span class="sticker">buttholes</span>
+            <span class="sticker">Shitposting</span>
+            <span class="sticker">Femboys and twinks</span>
+            <span class="sticker">Ragebait</span>
+          </div>
+        </div>
+        <div class="about-col">
+          <h3>// currently</h3>
+          <div class="stat-row">
+            <span class="stat-key">Playing</span>
+            <span class="stat-val">Minecraft</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-key">Studying</span>
+            <span class="stat-val">Cyber Security</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-key">Feeling</span>
+            <span class="stat-val">sexual</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- socials -->
+    <section class="zine zine--tilt-r stagger" id="socials">
+      <span class="zine-tab zine-tab--pink">Socials</span>
+      <p style="margin-top:0.4rem; font-family:'IBM Plex Mono',monospace; font-size:0.85rem;">tap a card. discord + telegram copy the handle. the rest yeet you to the platform.</p>
+      <div class="link-wall">
+        <button class="link-card" data-copy="@bewford" type="button">
+          <span class="arrow">⧉</span>
+          <span class="platform">Discord</span>
+          <span class="handle">@bewford</span>
+          <span class="copy-hint">COPIED!!</span>
+        </button>
+        <button class="link-card" data-copy="@bewfy" type="button">
+          <span class="arrow">⧉</span>
+          <span class="platform">Telegram</span>
+          <span class="handle">@bewfy</span>
+          <span class="copy-hint">COPIED!!</span>
+        </button>
+        <a class="link-card" href="https://www.instagram.com/bewfart/" target="_blank" rel="noreferrer">
+          <span class="arrow">↗</span>
+          <span class="platform">Instagram</span>
+          <span class="handle">@bewfart</span>
+        </a>
+        <a class="link-card" href="https://www.youtube.com/@bewfordq" target="_blank" rel="noreferrer">
+          <span class="arrow">↗</span>
+          <span class="platform">YouTube</span>
+          <span class="handle">@bewfordq</span>
+        </a>
+        <a class="link-card" href="https://steamcommunity.com/id/bewford/" target="_blank" rel="noreferrer">
+          <span class="arrow">↗</span>
+          <span class="platform">Steam</span>
+          <span class="handle">bewford</span>
+        </a>
+        <a class="link-card" href="https://github.com/bewfordq" target="_blank" rel="noreferrer">
+          <span class="arrow">↗</span>
+          <span class="platform">GitHub</span>
+          <span class="handle">@bewfordq</span>
+        </a>
+        <a class="link-card" href="https://x.com/bewfart" target="_blank" rel="noreferrer">
+          <span class="arrow">↗</span>
+          <span class="platform">Twitter / X</span>
+          <span class="handle">@bewfart</span>
+        </a>
+        <a class="link-card" href="https://ko-fi.com/bewford" target="_blank" rel="noreferrer">
+          <span class="arrow">↗</span>
+          <span class="platform">Ko-fi</span>
+          <span class="handle">bewford</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- cat zone -->
+    <section class="zine zine--tilt-l zine--acid stagger" id="catzone">
+      <span class="zine-tab">Cat Zone</span>
+      <p class="cat-zone-note">// grab a cat and throw it around. tap one 10 times for a surprise.</p>
+      <div class="cat-grid">
+        <div class="cat-cell"><img src="bugcat.gif" alt="bugcat gif" class="throwable" /></div>
+        <div class="cat-cell"><img src="bugcat-love.gif" alt="bugcat love gif" class="throwable" /></div>
+        <div class="cat-cell"><img src="bugcat-sticker-2.gif" alt="bugcat gif" class="throwable" /></div>
+        <div class="cat-cell"><img src="bugcat-sticker-3.gif" alt="bugcat gif" class="throwable" /></div>
+        <div class="cat-cell"><img src="bugcat-sticker-4.gif" alt="bugcat gif" class="throwable" /></div>
+        <div class="cat-cell"><img src="bugcat-waiting.gif" alt="bugcat waiting gif" class="throwable" /></div>
+      </div>
+    </section>
+
   </div>
 
+  <!-- bottom marquee -->
+  <div class="strip" aria-hidden="true">
+    <div class="strip-track" id="stripBot"></div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-links">
+      <a href="https://www.instagram.com/bewfart/" target="_blank" rel="noreferrer">Instagram</a>
+      <a href="https://github.com/bewfordq" target="_blank" rel="noreferrer">GitHub</a>
+      <a href="https://ko-fi.com/bewford" target="_blank" rel="noreferrer">Ko-fi</a>
+      <a href="https://www.youtube.com/@bewfordq" target="_blank" rel="noreferrer">YouTube</a>
+    </div>
+    <span>&copy; 2025 bewford. All rights are mine i did it.</span>
+    <div class="footer-secret">psst... try the konami code (↑↑↓↓←→←→BA)</div>
+  </footer>
+
   <script>
-    // Scroll progress bar
-    const bar = document.getElementById("scrollProgress");
-    window.addEventListener("scroll", () => {
-      const max = document.documentElement.scrollHeight - window.innerHeight;
-      bar.style.width = (max > 0 ? (window.scrollY / max) * 100 : 0) + "%";
-    }, { passive: true });
+    // ───────────────────── boot sequence ─────────────────────
+    const bootEl = document.getElementById("boot");
+    const bootLines = document.getElementById("bootLines");
+    const BOOT_SCRIPT = [
+      "BEWFORD-OS v6.9 — bootloader",
+      "> mounting /dev/freak ............ <span class='ok'>[OK]</span>",
+      "> loading bugcat drivers ......... <span class='ok'>[OK]</span>",
+      "> checking instagram ban status .. <span class='warn'>[BANNED AGAIN]</span>",
+      "> injecting rizz.dll ............. <span class='ok'>[OK]</span>",
+      "> starting minecraft.service ..... <span class='ok'>[OK]</span>",
+      "> launching bewford.exe ..........",
+    ];
 
-    // Nav glass effect on scroll
-    const nav = document.getElementById("siteNav");
-    window.addEventListener("scroll", () => {
-      nav.classList.toggle("scrolled", window.scrollY > 40);
-    }, { passive: true });
+    function endBoot() {
+      if (bootEl.classList.contains("done")) return;
+      bootEl.classList.add("done");
+      revealAll();
+    }
 
-    // Active nav link via IntersectionObserver
-    const sections = document.querySelectorAll("section[id]");
-    const navLinks = document.querySelectorAll(".nav-link");
-    const sectionObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          navLinks.forEach(l => l.classList.remove("active"));
-          const active = document.querySelector(`.nav-link[href="#${entry.target.id}"]`);
-          if (active) active.classList.add("active");
-        }
+    if (sessionStorage.getItem("bewf-booted")) {
+      bootEl.classList.add("done");
+      requestAnimationFrame(revealAll);
+    } else {
+      sessionStorage.setItem("bewf-booted", "1");
+      let i = 0;
+      const typeNext = () => {
+        if (i >= BOOT_SCRIPT.length) { setTimeout(endBoot, 550); return; }
+        const div = document.createElement("div");
+        div.className = "line";
+        div.innerHTML = BOOT_SCRIPT[i++];
+        bootLines.appendChild(div);
+        setTimeout(typeNext, 260 + Math.random() * 260);
+      };
+      setTimeout(typeNext, 300);
+    }
+    document.getElementById("bootSkip").addEventListener("click", endBoot);
+    bootEl.addEventListener("click", (e) => { if (e.target === bootEl) endBoot(); });
+
+    // ───────────────────── stagger reveal ─────────────────────
+    let revealed = false;
+    function revealAll() {
+      if (revealed) return;
+      revealed = true;
+      document.querySelectorAll(".stagger").forEach((node, idx) => {
+        setTimeout(() => node.classList.add("in"), 130 * idx);
       });
-    }, { threshold: 0.45 });
-    sections.forEach(s => sectionObserver.observe(s));
+    }
 
-    // Staggered reveal on load
-    document.querySelectorAll(".reveal").forEach((node, index) => {
-      window.setTimeout(() => {
-        node.classList.add("is-visible");
-      }, 110 * index);
+    // ───────────────────── marquee strips ─────────────────────
+    const PHRASES = {
+      stripTop: "★ bewford ★ certified freaklord ★ cyber security student ★ banned on instagram (again) ★ ",
+      stripMid: "☆ minecraft enjoyer ☆ shitposting professionally ☆ ragebait connoisseur ☆ bugcat appreciation society ☆ ",
+      stripBot: "★ thanks for scrolling ★ go touch grass ★ or don't ★ stay freaky ★ ",
+    };
+    Object.entries(PHRASES).forEach(([id, text]) => {
+      const el = document.getElementById(id);
+      const chunk = `<span>${text.trim()}</span>`.repeat(6);
+      el.innerHTML = chunk + chunk; // duplicated for the -50% loop
+    });
+
+    // ───────────────────── glitch scramble on name ─────────────────────
+    const megaName = document.getElementById("megaName");
+    const REAL = "bewford";
+    const GLYPHS = "!<>-_\\/[]{}—=+*^?#₿ЖФ";
+    let scrambling = false;
+    function scramble() {
+      if (scrambling) return;
+      scrambling = true;
+      let frame = 0;
+      const timer = setInterval(() => {
+        frame++;
+        megaName.textContent = REAL.split("").map((ch, i) =>
+          frame > i * 2 + 6 ? ch : GLYPHS[Math.floor(Math.random() * GLYPHS.length)]
+        ).join("");
+        if (frame > REAL.length * 2 + 8) {
+          clearInterval(timer);
+          megaName.textContent = REAL;
+          scrambling = false;
+        }
+      }, 45);
+    }
+    megaName.addEventListener("click", scramble);
+    setTimeout(scramble, 2600);
+
+    // ───────────────────── rotating status ─────────────────────
+    const statusText = document.getElementById("statusText");
+    const STATUSES = [
+      "ONLINE & MENACING",
+      "GAMING (PROBABLY)",
+      "DODGING IG BANS",
+      "STUDYING (LIE)",
+      "PETTING BUGCAT",
+      "BEING SO FUNNY RN",
+    ];
+    let si = 0;
+    setInterval(() => {
+      si = (si + 1) % STATUSES.length;
+      statusText.textContent = STATUSES[si];
+    }, 3200);
+
+    // ───────────────────── nav active state ─────────────────────
+    const navLinks = document.querySelectorAll(".nav-link");
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        navLinks.forEach((l) => l.classList.remove("active"));
+        const active = document.querySelector(`.nav-link[href="#${entry.target.id}"]`);
+        if (active) active.classList.add("active");
+      });
+    }, { threshold: 0.4 });
+    document.querySelectorAll("section[id]").forEach((s) => observer.observe(s));
+
+    // ───────────────────── copy handles ─────────────────────
+    document.querySelectorAll(".link-card[data-copy]").forEach((card) => {
+      card.addEventListener("click", async () => {
+        try { await navigator.clipboard.writeText(card.dataset.copy); } catch (_) {}
+        card.classList.add("copied");
+        setTimeout(() => card.classList.remove("copied"), 900);
+      });
+    });
+
+    // ───────────────────── cursor sparkle trail ─────────────────────
+    const TRAIL = ["✦", "★", "✧", "♥", "☆"];
+    let lastTrail = 0;
+    window.addEventListener("pointermove", (e) => {
+      const now = performance.now();
+      if (now - lastTrail < 70) return;
+      lastTrail = now;
+      const bit = document.createElement("span");
+      bit.className = "trail-bit";
+      bit.textContent = TRAIL[Math.floor(Math.random() * TRAIL.length)];
+      bit.style.left = e.clientX + "px";
+      bit.style.top = e.clientY + "px";
+      bit.style.color = ["#ff3fa4", "#3fe8ff", "#9d5cff", "#101010"][Math.floor(Math.random() * 4)];
+      document.body.appendChild(bit);
+      setTimeout(() => bit.remove(), 700);
+    }, { passive: true });
+
+    // ───────────────────── throwable cats ─────────────────────
+    document.querySelectorAll(".throwable").forEach((cat) => {
+      let tapCount = 0, tapTimer;
+      cat.addEventListener("pointerdown", (e) => {
+        e.preventDefault();
+        const rect = cat.getBoundingClientRect();
+        const startLeft = rect.left, startTop = rect.top;
+        cat.classList.add("dragging");
+        cat.style.left = startLeft + "px";
+        cat.style.top = startTop + "px";
+        cat.style.width = rect.width + "px";
+        const offX = e.clientX - rect.left, offY = e.clientY - rect.top;
+        let moved = false;
+
+        const onMove = (ev) => {
+          moved = true;
+          cat.style.left = (ev.clientX - offX) + "px";
+          cat.style.top = (ev.clientY - offY) + "px";
+        };
+        const onUp = () => {
+          window.removeEventListener("pointermove", onMove);
+          window.removeEventListener("pointerup", onUp);
+          // spring back home
+          cat.style.transition = "left 0.4s cubic-bezier(0.34,1.56,0.64,1), top 0.4s cubic-bezier(0.34,1.56,0.64,1)";
+          cat.style.left = startLeft + "px";
+          cat.style.top = startTop + "px";
+          setTimeout(() => {
+            cat.classList.remove("dragging");
+            cat.style.cssText = "";
+          }, 420);
+
+          if (!moved) {
+            tapCount++;
+            clearTimeout(tapTimer);
+            tapTimer = setTimeout(() => { tapCount = 0; }, 2500);
+            if (tapCount >= 10) { tapCount = 0; catRain(); }
+          }
+        };
+        window.addEventListener("pointermove", onMove);
+        window.addEventListener("pointerup", onUp);
+      });
+    });
+
+    // ───────────────────── cat rain easter egg ─────────────────────
+    const RAIN_SRC = ["bugcat.gif", "bugcat-love.gif", "bugcat-sticker-1.gif", "bugcat-sticker-2.gif", "bugcat-sticker-3.gif", "bugcat-sticker-4.gif", "bugcat-tutu.gif", "bugcat-waiting.gif"];
+    function catRain() {
+      for (let i = 0; i < 26; i++) {
+        setTimeout(() => {
+          const img = document.createElement("img");
+          img.src = RAIN_SRC[Math.floor(Math.random() * RAIN_SRC.length)];
+          img.className = "rain-cat";
+          img.style.left = Math.random() * 96 + "vw";
+          img.style.animationDuration = 1.6 + Math.random() * 2.2 + "s";
+          img.style.width = 56 + Math.random() * 70 + "px";
+          document.body.appendChild(img);
+          img.addEventListener("animationend", () => img.remove());
+        }, i * 120);
+      }
+    }
+
+    // ───────────────────── konami code ─────────────────────
+    const KONAMI = ["ArrowUp","ArrowUp","ArrowDown","ArrowDown","ArrowLeft","ArrowRight","ArrowLeft","ArrowRight","b","a"];
+    let kIdx = 0;
+    window.addEventListener("keydown", (e) => {
+      kIdx = (e.key === KONAMI[kIdx]) ? kIdx + 1 : (e.key === KONAMI[0] ? 1 : 0);
+      if (kIdx === KONAMI.length) {
+        kIdx = 0;
+        catRain();
+        document.body.style.transition = "filter 0.3s ease";
+        document.body.style.filter = "hue-rotate(180deg)";
+        setTimeout(() => { document.body.style.filter = ""; }, 4000);
+      }
     });
   </script>
 </body>
