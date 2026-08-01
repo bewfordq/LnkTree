@@ -6,7 +6,7 @@
   <title>bewford</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet" />
   <noscript>
     <style>
       .stagger { opacity: 1 !important; transform: none !important; }
@@ -14,16 +14,17 @@
   </noscript>
   <style>
     :root {
-      --paper: #f2ecdd;
-      --ink: #101010;
-      --acid: #c8ff00;
-      --hot: #ff3fa4;
-      --cyan: #3fe8ff;
-      --tang: #ff7a1a;
-      --purp: #9d5cff;
-      --border: 3px solid var(--ink);
-      --hard-shadow: 7px 7px 0 var(--ink);
-      --hard-shadow-sm: 4px 4px 0 var(--ink);
+      --desktop: #008080;
+      --face: #d4d0c8;
+      --face-lite: #dfdfdf;
+      --shadow: #808080;
+      --dark: #000000;
+      --hilite: #ffffff;
+      --title-a: #000080;
+      --title-b: #1084d0;
+      --link: #0000ee;
+      --ui: "MS Sans Serif", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      --term: "VT323", "Courier New", monospace;
     }
 
     * { box-sizing: border-box; }
@@ -33,32 +34,38 @@
     body {
       margin: 0;
       min-height: 100vh;
-      font-family: "Space Grotesk", sans-serif;
-      color: var(--ink);
-      background: var(--paper);
-      background-image:
-        radial-gradient(circle at 12% 8%, rgba(200, 255, 0, 0.35), transparent 30%),
-        radial-gradient(circle at 90% 12%, rgba(63, 232, 255, 0.3), transparent 26%),
-        radial-gradient(circle at 80% 90%, rgba(255, 63, 164, 0.22), transparent 32%),
-        radial-gradient(circle at 8% 85%, rgba(157, 92, 255, 0.22), transparent 30%);
+      font-family: var(--ui);
+      font-size: 14px;
+      color: var(--dark);
+      background: var(--desktop);
       overflow-x: hidden;
-      cursor: crosshair;
     }
 
-    ::selection { background: var(--hot); color: #fff; }
+    ::selection { background: var(--title-a); color: #fff; }
 
     a { color: inherit; }
     img { max-width: 100%; }
 
-    /* ── grain + scanlines over everything ── */
+    /* classic chunky scrollbar */
+    ::-webkit-scrollbar { width: 16px; height: 16px; }
+    ::-webkit-scrollbar-track {
+      background: repeating-conic-gradient(var(--face-lite) 0% 25%, var(--hilite) 0% 50%) 0 0 / 2px 2px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--face);
+      border: 2px solid;
+      border-color: var(--hilite) var(--dark) var(--dark) var(--hilite);
+    }
+
+    /* ── CRT overlays ── */
     .crt {
       position: fixed;
       inset: 0;
       pointer-events: none;
       z-index: 9000;
-      background: repeating-linear-gradient(0deg, rgba(0,0,0,0.055) 0 1px, transparent 1px 3px);
+      background: repeating-linear-gradient(0deg, rgba(0,0,0,0.06) 0 1px, transparent 1px 3px);
       mix-blend-mode: multiply;
-      opacity: 0.5;
+      opacity: 0.55;
     }
 
     .grain {
@@ -66,7 +73,7 @@
       inset: -50%;
       pointer-events: none;
       z-index: 9001;
-      opacity: 0.07;
+      opacity: 0.05;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
       animation: grain-shift 0.4s steps(4) infinite;
     }
@@ -83,502 +90,451 @@
       *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
     }
 
-    /* ── marquee strips ── */
-    .strip {
+    /* ── bevels ── */
+    .raised {
+      border: 2px solid;
+      border-color: var(--hilite) var(--dark) var(--dark) var(--hilite);
+      box-shadow: inset 1px 1px 0 var(--face-lite), inset -1px -1px 0 var(--shadow);
+    }
+
+    .sunken {
+      border: 2px solid;
+      border-color: var(--shadow) var(--hilite) var(--hilite) var(--shadow);
+      box-shadow: inset 1px 1px 0 var(--dark), inset -1px -1px 0 var(--face-lite);
+    }
+
+    /* ── scrolling ticker ── */
+    .ticker {
+      background: #000;
+      color: #00ff41;
+      font-family: var(--term);
+      font-size: 1.35rem;
+      letter-spacing: 0.04em;
+      padding: 2px 0;
       overflow: hidden;
       white-space: nowrap;
-      border-top: var(--border);
-      border-bottom: var(--border);
-      background: var(--acid);
-      padding: 0.55rem 0;
-      font-family: "Archivo Black", sans-serif;
-      font-size: clamp(0.85rem, 2.4vw, 1.15rem);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
       user-select: none;
+      border-bottom: 2px solid var(--dark);
     }
 
-    .strip--pink { background: var(--hot); color: #fff; }
-
-    .strip-track {
-      display: inline-block;
-      animation: marquee 22s linear infinite;
-    }
-
-    .strip-track span { margin-right: 2.2rem; display: inline-block; }
+    .strip-track { display: inline-block; animation: marquee 26s linear infinite; }
+    .strip-track span { margin-right: 2.5rem; display: inline-block; }
 
     @keyframes marquee {
       from { transform: translateX(0); }
       to { transform: translateX(-50%); }
     }
 
-    /* ── nav ── */
+    /* ── menu bar ── */
     .site-nav {
       position: sticky;
-      top: 0.8rem;
+      top: 0;
       z-index: 500;
-      width: min(1080px, calc(100% - 1.6rem));
-      margin: 0.9rem auto 0;
+      background: var(--face);
+      border-bottom: 2px solid var(--shadow);
+      box-shadow: 0 1px 0 var(--hilite) inset;
     }
 
-    .nav-inner {
+    .menubar {
+      width: min(1080px, calc(100% - 1rem));
+      margin: 0 auto;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 1rem;
-      background: var(--paper);
-      border: var(--border);
-      box-shadow: var(--hard-shadow-sm);
-      padding: 0.55rem 0.9rem;
+      padding: 3px 0;
+      flex-wrap: wrap;
     }
 
-    .nav-logo {
-      font-family: "Archivo Black", sans-serif;
-      font-size: 1rem;
-      text-transform: lowercase;
-      background: var(--ink);
-      color: var(--acid);
-      padding: 0.2rem 0.6rem;
-      transform: rotate(-2deg);
-      display: inline-block;
+    .menu-logo {
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 2px 8px;
+      background: var(--title-a);
+      color: var(--hilite);
     }
 
-    .nav-links { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+    .nav-links { display: flex; gap: 2px; flex-wrap: wrap; }
 
     .nav-links a {
-      font-family: "IBM Plex Mono", monospace;
-      font-size: 0.78rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
+      font-size: 0.82rem;
       text-decoration: none;
-      padding: 0.35rem 0.6rem;
-      border: 2px solid transparent;
-      transition: transform 0.12s ease;
+      padding: 3px 9px;
+      color: var(--dark);
+      border: 1px solid transparent;
     }
 
-    .nav-links a:hover, .nav-links a.active {
-      border-color: var(--ink);
-      background: var(--acid);
-      transform: rotate(2deg);
-      box-shadow: 3px 3px 0 var(--ink);
+    .nav-links a u { text-underline-offset: 2px; }
+
+    .nav-links a:hover {
+      background: var(--title-a);
+      color: var(--hilite);
     }
+
+    .nav-links a.active {
+      border: 1px dotted var(--dark);
+      background: var(--face-lite);
+    }
+
+    .nav-links a.active:hover { background: var(--title-a); color: var(--hilite); }
 
     /* ── shell ── */
     .shell {
       width: min(1080px, calc(100% - 1.6rem));
       margin: 0 auto;
-      padding: 1.6rem 0 3rem;
+      padding: 1.4rem 0 2rem;
+      display: grid;
+      gap: 1.4rem;
     }
+
+    /* ── windows ── */
+    .win {
+      background: var(--face);
+      padding: 3px;
+    }
+
+    .win-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.6rem;
+      padding: 3px 3px 3px 6px;
+      background: linear-gradient(90deg, var(--title-a), var(--title-b));
+      color: var(--hilite);
+      font-weight: 700;
+      font-size: 0.84rem;
+      letter-spacing: 0.01em;
+    }
+
+    .win-btns { display: flex; gap: 2px; flex-shrink: 0; }
+
+    .win-btn {
+      width: 17px;
+      height: 15px;
+      display: grid;
+      place-items: center;
+      background: var(--face);
+      color: var(--dark);
+      font-size: 9px;
+      font-weight: 700;
+      line-height: 1;
+      border: 1px solid;
+      border-color: var(--hilite) var(--dark) var(--dark) var(--hilite);
+    }
+
+    .win-body { padding: 14px; }
 
     /* ── hero ── */
     .hero {
-      position: relative;
       display: grid;
-      grid-template-columns: minmax(0, 1.2fr) minmax(240px, 0.8fr);
-      gap: clamp(1.2rem, 3vw, 2.4rem);
+      grid-template-columns: minmax(0, 1.15fr) minmax(210px, 0.85fr);
+      gap: 1.4rem;
       align-items: center;
-      padding: clamp(1.4rem, 4vw, 2.8rem) 0 clamp(2rem, 5vw, 3rem);
     }
 
     .mega-name {
       margin: 0;
-      font-family: "Archivo Black", sans-serif;
-      font-size: clamp(3.4rem, 12vw, 8.5rem);
-      line-height: 0.86;
-      letter-spacing: -0.03em;
-      text-transform: lowercase;
-      -webkit-text-stroke: 2px var(--ink);
-      color: var(--acid);
-      text-shadow: 5px 5px 0 var(--hot), 10px 10px 0 var(--ink);
+      font-size: clamp(2.8rem, 9vw, 5.4rem);
+      line-height: 1;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--title-a);
+      text-shadow: 2px 2px 0 var(--hilite), 4px 4px 0 var(--shadow);
       cursor: pointer;
       user-select: none;
       word-break: break-word;
     }
 
-    .mega-name:hover { animation: shake 0.3s linear infinite; }
-
-    @keyframes shake {
-      0%, 100% { transform: translate(0, 0) rotate(0deg); }
-      25% { transform: translate(-2px, 2px) rotate(-0.5deg); }
-      50% { transform: translate(2px, -1px) rotate(0.5deg); }
-      75% { transform: translate(-1px, -2px) rotate(-0.3deg); }
-    }
-
     .hero-sub {
-      margin: 1.1rem 0 0;
-      font-family: "IBM Plex Mono", monospace;
-      font-size: clamp(0.85rem, 2vw, 1.05rem);
-      font-weight: 500;
-      max-width: 44ch;
-      line-height: 1.7;
+      margin: 1rem 0 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      font-size: 0.85rem;
     }
 
-    .hero-sub .hl { background: var(--cyan); padding: 0 0.35em; border: 2px solid var(--ink); display: inline-block; transform: rotate(-1deg); }
-    .hero-sub .hl--pink { background: var(--hot); color: #fff; transform: rotate(1.5deg); }
-    .hero-sub .hl--acid { background: var(--acid); transform: rotate(-2deg); }
+    .hero-sub .hl {
+      padding: 3px 8px;
+      background: #00ffff;
+      font-weight: 700;
+    }
+
+    .hero-sub .hl--pink { background: #ff80ff; }
+    .hero-sub .hl--acid { background: #00ff00; }
 
     .status-badge {
       display: inline-flex;
       align-items: center;
-      gap: 0.5rem;
-      margin-top: 1.2rem;
-      padding: 0.45rem 0.85rem;
-      background: var(--ink);
-      color: var(--acid);
-      font-family: "IBM Plex Mono", monospace;
-      font-size: 0.8rem;
-      letter-spacing: 0.08em;
+      gap: 6px;
+      margin-top: 1rem;
+      padding: 3px 10px;
+      background: var(--face);
+      font-family: var(--term);
+      font-size: 1.05rem;
       text-transform: uppercase;
-      transform: rotate(-1deg);
-      box-shadow: var(--hard-shadow-sm);
     }
 
     .status-dot {
       width: 9px;
       height: 9px;
-      border-radius: 50%;
-      background: var(--acid);
+      background: #00c000;
+      border: 1px solid #004000;
       animation: blink 1.4s steps(2) infinite;
     }
 
-    @keyframes blink { 50% { opacity: 0.15; } }
+    @keyframes blink { 50% { opacity: 0.2; } }
 
-    /* polaroid stack */
-    .polaroid-stack { position: relative; justify-self: center; }
+    .hero-media { position: relative; justify-self: center; }
 
-    .polaroid {
-      background: #fff;
-      border: var(--border);
-      padding: 0.7rem 0.7rem 2.4rem;
-      box-shadow: var(--hard-shadow);
-      transform: rotate(3deg);
-      width: min(280px, 68vw);
-      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-      position: relative;
-      z-index: 2;
-    }
+    .portrait { background: var(--hilite); padding: 4px; width: min(240px, 62vw); }
+    .portrait img { display: block; width: 100%; aspect-ratio: 1/1; object-fit: cover; }
 
-    .polaroid:hover { transform: rotate(-2deg) scale(1.04); }
-
-    .polaroid img {
+    .portrait-cap {
       display: block;
-      width: 100%;
-      aspect-ratio: 1/1;
-      object-fit: cover;
-      border: 2px solid var(--ink);
-      filter: saturate(1.15) contrast(1.05);
-    }
-
-    .polaroid-caption {
-      position: absolute;
-      bottom: 0.45rem;
-      left: 0;
-      right: 0;
       text-align: center;
-      font-family: "IBM Plex Mono", monospace;
-      font-size: 0.78rem;
-      font-weight: 700;
+      font-family: var(--term);
+      font-size: 1.05rem;
+      padding-top: 2px;
     }
 
     .hero-cat {
       position: absolute;
-      width: clamp(80px, 16vw, 120px);
-      right: -1.6rem;
-      bottom: -1.8rem;
-      z-index: 3;
-      transform: rotate(-10deg);
-      filter: drop-shadow(4px 6px 0 rgba(16,16,16,0.55));
+      width: clamp(70px, 15vw, 100px);
+      right: -1rem;
+      bottom: -1.4rem;
       pointer-events: none;
     }
 
-    .hero-spin {
-      position: absolute;
-      top: -2.4rem;
-      left: -2.6rem;
-      width: 96px;
-      height: 96px;
-      z-index: 3;
-      animation: spin 14s linear infinite;
-      pointer-events: none;
-    }
+    /* ── about ── */
+    section[id] { scroll-margin-top: 3.2rem; }
 
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    /* ── sections ── */
-    section[id] { scroll-margin-top: 5.5rem; }
-
-    .zine {
-      position: relative;
-      border: var(--border);
-      background: #fff;
-      box-shadow: var(--hard-shadow);
-      padding: clamp(1.2rem, 3.4vw, 2.2rem);
-      margin: 2.6rem 0;
-    }
-
-    .zine--tilt-l { transform: rotate(-0.7deg); }
-    .zine--tilt-r { transform: rotate(0.7deg); }
-    .zine--acid { background: var(--acid); }
-    .zine--cyan { background: var(--cyan); }
-
-    .zine-tab {
-      position: absolute;
-      top: -1.35rem;
-      left: 1.4rem;
-      background: var(--ink);
-      color: #fff;
-      font-family: "Archivo Black", sans-serif;
-      font-size: clamp(1rem, 2.6vw, 1.45rem);
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      padding: 0.35rem 1rem;
-      transform: rotate(-2deg);
-      box-shadow: var(--hard-shadow-sm);
-    }
-
-    .zine-tab--pink { background: var(--hot); color: #fff; transform: rotate(1.6deg); left: auto; right: 1.4rem; }
-
-    .zine p { line-height: 1.75; }
+    .about-copy { margin: 0 0 1rem; line-height: 1.65; }
 
     .about-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: clamp(1rem, 3vw, 2rem);
-      margin-top: 1.4rem;
+      gap: 1.4rem;
     }
 
-    .about-col h3 {
-      margin: 0 0 0.9rem;
-      font-family: "Archivo Black", sans-serif;
+    .field-title {
+      margin: 0 0 0.7rem;
+      font-size: 0.85rem;
+      font-weight: 700;
       text-transform: uppercase;
-      font-size: 1rem;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.04em;
+      border-bottom: 1px solid var(--shadow);
+      box-shadow: 0 1px 0 var(--hilite);
+      padding-bottom: 3px;
     }
 
-    /* sticker tags */
-    .sticker-pile { display: flex; flex-wrap: wrap; gap: 0.7rem; }
+    .sticker-pile { display: flex; flex-wrap: wrap; gap: 7px; }
 
     .sticker {
-      display: inline-block;
-      padding: 0.5rem 0.9rem;
-      border: var(--border);
-      font-family: "IBM Plex Mono", monospace;
+      padding: 4px 10px;
+      font-size: 0.82rem;
       font-weight: 700;
-      font-size: 0.85rem;
-      background: #fff;
-      box-shadow: var(--hard-shadow-sm);
-      transition: transform 0.15s ease;
+      background: var(--face);
       cursor: default;
     }
 
-    .sticker:nth-child(4n+1) { background: var(--hot); color: #fff; transform: rotate(-2deg); }
-    .sticker:nth-child(4n+2) { background: var(--cyan); transform: rotate(1.5deg); }
-    .sticker:nth-child(4n+3) { background: var(--acid); transform: rotate(-1deg); }
-    .sticker:nth-child(4n+4) { background: var(--purp); color: #fff; transform: rotate(2.4deg); }
+    .sticker:nth-child(4n+1) { background: #ff80ff; }
+    .sticker:nth-child(4n+2) { background: #00ffff; }
+    .sticker:nth-child(4n+3) { background: #00ff00; }
+    .sticker:nth-child(4n+4) { background: #ffff00; }
 
-    .sticker:hover { transform: rotate(0deg) scale(1.12); z-index: 2; }
-
-    /* currently rows */
     .stat-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 0.8rem;
-      border: var(--border);
-      background: var(--paper);
-      padding: 0.7rem 0.9rem;
-      margin-bottom: 0.7rem;
-      box-shadow: var(--hard-shadow-sm);
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      gap: 0.7rem;
+      background: var(--face);
+      padding: 5px 7px;
+      margin-bottom: 7px;
     }
 
-    .stat-row:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--ink); }
-
     .stat-key {
-      font-family: "IBM Plex Mono", monospace;
-      font-size: 0.72rem;
-      font-weight: 700;
+      font-family: var(--term);
+      font-size: 1.05rem;
       text-transform: uppercase;
-      letter-spacing: 0.1em;
-      background: var(--ink);
-      color: var(--acid);
-      padding: 0.2rem 0.5rem;
+      background: var(--title-a);
+      color: var(--hilite);
+      padding: 1px 7px;
       flex-shrink: 0;
     }
 
-    .stat-val { font-weight: 700; text-align: right; }
+    .stat-val { font-weight: 700; text-align: right; font-size: 0.85rem; }
 
     /* ── socials ── */
+    .note {
+      margin: 0 0 1rem;
+      font-family: var(--term);
+      font-size: 1.1rem;
+    }
+
     .link-wall {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-      gap: 1rem;
-      margin-top: 1.4rem;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 8px;
     }
 
     .link-card {
       position: relative;
       display: flex;
       flex-direction: column;
-      gap: 0.3rem;
-      border: var(--border);
-      background: #fff;
-      padding: 1rem 1.1rem;
+      align-items: flex-start;
+      gap: 1px;
+      padding: 8px 10px;
+      background: var(--face);
+      font-family: var(--ui);
+      font-size: 0.85rem;
+      text-align: left;
       text-decoration: none;
-      box-shadow: var(--hard-shadow-sm);
-      transition: transform 0.16s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.16s ease, background 0.16s ease;
-      overflow: hidden;
+      color: var(--dark);
       cursor: pointer;
+      overflow: hidden;
     }
 
-    .link-card:nth-child(odd) { transform: rotate(-0.8deg); }
-    .link-card:nth-child(even) { transform: rotate(0.8deg); }
-
-    .link-card:hover, .link-card:focus-visible {
-      transform: rotate(0deg) translate(-3px, -3px) scale(1.02);
-      box-shadow: 8px 8px 0 var(--ink);
-      background: var(--acid);
-      outline: none;
+    .link-card:active,
+    .link-card.copied {
+      border-color: var(--shadow) var(--hilite) var(--hilite) var(--shadow);
+      box-shadow: inset 1px 1px 0 var(--dark), inset -1px -1px 0 var(--face-lite);
     }
 
-    .link-card .platform {
-      font-family: "Archivo Black", sans-serif;
-      text-transform: uppercase;
-      font-size: 1.02rem;
-      letter-spacing: 0.03em;
-    }
+    .link-card:focus-visible { outline: 1px dotted var(--dark); outline-offset: -4px; }
+
+    .link-card .platform { font-weight: 700; }
 
     .link-card .handle {
-      font-family: "IBM Plex Mono", monospace;
-      font-size: 0.85rem;
-      font-weight: 500;
+      font-family: var(--term);
+      font-size: 1.05rem;
+      color: var(--link);
+      text-decoration: underline;
     }
 
     .link-card .arrow {
       position: absolute;
-      top: 0.7rem;
-      right: 0.8rem;
-      font-family: "IBM Plex Mono", monospace;
+      top: 6px;
+      right: 8px;
+      font-size: 0.8rem;
       font-weight: 700;
-      font-size: 1rem;
-      transition: transform 0.16s ease;
+      color: var(--shadow);
     }
-
-    .link-card:hover .arrow { transform: translate(3px, -3px) rotate(45deg); }
 
     .link-card .copy-hint {
       position: absolute;
       inset: 0;
       display: grid;
       place-items: center;
-      background: var(--hot);
-      color: #fff;
-      font-family: "Archivo Black", sans-serif;
+      background: var(--title-a);
+      color: var(--hilite);
+      font-weight: 700;
+      font-size: 0.85rem;
       text-transform: uppercase;
-      font-size: 0.95rem;
       letter-spacing: 0.06em;
       opacity: 0;
-      transition: opacity 0.18s ease;
+      transition: opacity 0.15s ease;
       pointer-events: none;
     }
 
     .link-card.copied .copy-hint { opacity: 1; }
 
-    /* ── cat zone ── */
-    .cat-zone-note {
-      font-family: "IBM Plex Mono", monospace;
-      font-size: 0.82rem;
-      margin: 0.2rem 0 1.2rem;
-    }
-
+    /* ── gif zones ── */
     .cat-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 9px;
     }
 
-    /* screencaps are wider than the sticker gifs, so give them more room */
-    .rd-grid { grid-template-columns: repeat(auto-fit, minmax(175px, 1fr)); }
-    .rd-grid .cat-cell { min-height: 170px; }
-    .rd-grid .cat-cell img { width: min(100%, 240px); }
+    .rd-grid { grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); }
 
     .cat-cell {
-      border: var(--border);
-      background: var(--paper);
-      box-shadow: var(--hard-shadow-sm);
       display: grid;
       place-items: center;
-      min-height: 150px;
-      padding: 0.7rem;
+      min-height: 148px;
+      padding: 8px;
+      background: var(--hilite);
       touch-action: none;
     }
 
+    .rd-grid .cat-cell { min-height: 166px; }
+
     .cat-cell img {
-      width: min(120px, 80%);
+      width: min(118px, 82%);
       cursor: grab;
-      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: transform 0.18s ease;
       user-select: none;
       -webkit-user-drag: none;
     }
 
+    .rd-grid .cat-cell img { width: min(100%, 230px); }
+
     .cat-cell img:active { cursor: grabbing; }
-    .throwable.dragging { position: fixed; z-index: 8000; pointer-events: none; transform: scale(1.3) rotate(8deg); filter: drop-shadow(6px 10px 0 rgba(16,16,16,0.4)); }
-    .cat-cell img:hover { transform: scale(1.15) rotate(-5deg); }
+    .cat-cell img:hover { transform: scale(1.08); }
+
+    .throwable.dragging {
+      position: fixed;
+      z-index: 8000;
+      pointer-events: none;
+      transform: scale(1.22);
+      filter: drop-shadow(4px 6px 3px rgba(0,0,0,0.45));
+    }
 
     /* ── bottom image ── */
-    .bottom-shot {
-      margin-top: 2.6rem;
-      padding: 0.6rem;
-      border: var(--border);
-      background: #fff;
-      box-shadow: var(--hard-shadow);
-      transform: rotate(-0.6deg);
-    }
+    .bottom-shot { background: var(--face); padding: 3px; }
+    .bottom-shot .shot-well { padding: 5px; background: var(--hilite); }
+    .bottom-shot img { display: block; width: 100%; }
 
-    .bottom-shot.stagger.in { transform: rotate(-0.6deg); }
-
-    .bottom-shot img {
-      display: block;
-      width: 100%;
-      border: 2px solid var(--ink);
-    }
-
-    /* ── footer ── */
+    /* ── taskbar footer ── */
     .site-footer {
-      border-top: var(--border);
-      background: var(--ink);
-      color: var(--paper);
-      padding: 2rem 1rem 2.4rem;
-      text-align: center;
-      font-family: "IBM Plex Mono", monospace;
-      font-size: 0.85rem;
+      background: var(--face);
+      padding: 3px;
+      margin-top: 0.4rem;
+      border-top: 2px solid var(--hilite);
     }
 
-    .footer-links {
+    .taskbar {
+      width: min(1080px, calc(100% - 0.6rem));
+      margin: 0 auto;
       display: flex;
-      gap: 0.6rem;
+      align-items: center;
+      gap: 8px;
       flex-wrap: wrap;
-      justify-content: center;
-      margin-bottom: 1.2rem;
     }
+
+    .footer-links { display: flex; gap: 4px; flex-wrap: wrap; flex: 1; }
 
     .footer-links a {
-      color: var(--paper);
+      padding: 4px 12px;
+      background: var(--face);
+      font-size: 0.82rem;
       text-decoration: none;
-      border: 2px solid var(--paper);
-      padding: 0.35rem 0.75rem;
-      transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
+      color: var(--dark);
     }
 
-    .footer-links a:hover {
-      background: var(--acid);
-      color: var(--ink);
-      border-color: var(--acid);
-      transform: rotate(-2deg);
+    .footer-links a:active {
+      border-color: var(--shadow) var(--hilite) var(--hilite) var(--shadow);
+      box-shadow: inset 1px 1px 0 var(--dark), inset -1px -1px 0 var(--face-lite);
     }
 
-    /* cat rain */
+    .tray {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 3px 9px;
+      font-family: var(--term);
+      font-size: 1.05rem;
+    }
+
+    .copyright {
+      text-align: center;
+      color: var(--hilite);
+      font-family: var(--term);
+      font-size: 1.05rem;
+      padding: 0.7rem 1rem 1.1rem;
+      text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+    }
+
+    /* ── rain easter egg ── */
     .rain-cat {
       position: fixed;
       top: -160px;
@@ -588,28 +544,24 @@
       animation: rain-fall linear forwards;
     }
 
-    @keyframes rain-fall {
-      to { transform: translateY(120vh) rotate(360deg); }
-    }
+    @keyframes rain-fall { to { transform: translateY(120vh) rotate(360deg); } }
 
-    /* stagger reveal */
-    .stagger { opacity: 0; transform: translateY(26px) rotate(0.5deg); transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
-    .stagger.in { opacity: 1; transform: translateY(0); }
-
-    /* keep the zine tilts after reveal */
-    .zine--tilt-l.stagger.in { transform: rotate(-0.7deg); }
-    .zine--tilt-r.stagger.in { transform: rotate(0.7deg); }
+    /* ── reveal ── */
+    .stagger { opacity: 0; transform: translateY(14px); transition: opacity 0.35s ease, transform 0.35s ease; }
+    .stagger.in { opacity: 1; transform: none; }
 
     @media (max-width: 860px) {
       .hero { grid-template-columns: 1fr; }
-      .polaroid-stack { margin-top: 1rem; }
+      .hero-media { margin-top: 0.6rem; }
       .about-grid { grid-template-columns: 1fr; }
-      .hero-spin { left: auto; right: -1rem; top: -2rem; width: 72px; height: 72px; }
     }
 
     @media (max-width: 520px) {
-      .nav-links a { font-size: 0.68rem; padding: 0.3rem 0.4rem; }
-      .mega-name { text-shadow: 3px 3px 0 var(--hot), 6px 6px 0 var(--ink); }
+      body { font-size: 13px; }
+      .nav-links a { font-size: 0.75rem; padding: 3px 6px; }
+      .win-body { padding: 10px; }
+      .taskbar { justify-content: center; }
+      .tray { display: none; }
     }
   </style>
 </head>
@@ -618,19 +570,18 @@
   <div class="crt" aria-hidden="true"></div>
   <div class="grain" aria-hidden="true"></div>
 
-  <!-- top marquee -->
-  <div class="strip strip--pink" aria-hidden="true">
+  <div class="ticker" aria-hidden="true">
     <div class="strip-track" id="stripTop"></div>
   </div>
 
   <nav class="site-nav" id="siteNav">
-    <div class="nav-inner">
-      <span class="nav-logo">bewford</span>
+    <div class="menubar">
+      <span class="menu-logo">bewford.exe</span>
       <div class="nav-links">
-        <a href="#about" class="nav-link">About</a>
-        <a href="#socials" class="nav-link">Socials</a>
-        <a href="#rdzone" class="nav-link">Dash</a>
-        <a href="#catzone" class="nav-link">Cat Zone</a>
+        <a href="#about" class="nav-link"><u>A</u>bout</a>
+        <a href="#socials" class="nav-link"><u>S</u>ocials</a>
+        <a href="#rdzone" class="nav-link"><u>D</u>ash</a>
+        <a href="#catzone" class="nav-link"><u>C</u>at Zone</a>
       </div>
     </div>
   </nav>
@@ -638,155 +589,200 @@
   <div class="shell">
 
     <!-- hero -->
-    <section class="hero" id="home">
-      <div class="stagger">
-        <h1 class="mega-name" id="megaName" title="click me">bewford</h1>
-        <p class="hero-sub">
-          <span class="hl">cyber security student</span>
-          <span class="hl hl--pink">freaklord</span>
-          <span class="hl hl--acid">lowk the funniest feminine male</span>
-        </p>
-        <div class="status-badge">
-          <span class="status-dot"></span>
-          <span>online</span>
-        </div>
+    <section class="win raised stagger" id="home">
+      <div class="win-title">
+        <span>bewford.exe</span>
+        <span class="win-btns" aria-hidden="true">
+          <span class="win-btn">_</span><span class="win-btn">□</span><span class="win-btn">✕</span>
+        </span>
       </div>
-
-      <div class="polaroid-stack stagger">
-        <img src="assets/bugcat/bugcat-tutu.gif" alt="" class="hero-spin" aria-hidden="true" />
-        <div class="polaroid">
-          <img src="assets/img/honksho.jpg" alt="bewford's profile picture" />
-          <span class="polaroid-caption">@bewford</span>
+      <div class="win-body hero">
+        <div>
+          <h1 class="mega-name" id="megaName" title="click me">bewford</h1>
+          <p class="hero-sub">
+            <span class="hl">cyber security student</span>
+            <span class="hl hl--pink">freaklord</span>
+            <span class="hl hl--acid">lowk the funniest feminine male</span>
+          </p>
+          <div class="status-badge sunken">
+            <span class="status-dot"></span>
+            <span>online</span>
+          </div>
         </div>
-        <img src="assets/bugcat/bugcat-sticker-1.gif" alt="" class="hero-cat" aria-hidden="true" />
+        <div class="hero-media">
+          <div class="portrait sunken">
+            <img src="assets/img/honksho.jpg" alt="bewford's profile picture" />
+            <span class="portrait-cap">@bewford</span>
+          </div>
+          <img src="assets/bugcat/bugcat-sticker-1.gif" alt="" class="hero-cat" aria-hidden="true" />
+        </div>
       </div>
     </section>
 
     <!-- about -->
-    <section class="zine zine--tilt-l stagger" id="about">
-      <span class="zine-tab">About Me</span>
-      <p>hello i am bewford. i keep getting banned on instagram. i like to play video games. i like to play minecraft and stuff</p>
-
-      <div class="about-grid">
-        <div class="about-col">
-          <h3>// i like</h3>
-          <div class="sticker-pile">
-            <span class="sticker">buttholes</span>
-            <span class="sticker">Shitposting</span>
-            <span class="sticker">Femboys and twinks</span>
-            <span class="sticker">Ragebait</span>
+    <section class="win raised stagger" id="about">
+      <div class="win-title">
+        <span>about me</span>
+        <span class="win-btns" aria-hidden="true">
+          <span class="win-btn">_</span><span class="win-btn">□</span><span class="win-btn">✕</span>
+        </span>
+      </div>
+      <div class="win-body">
+        <p class="about-copy">hello i am bewford. i keep getting banned on instagram. i like to play video games. i like to play minecraft and stuff</p>
+        <div class="about-grid">
+          <div>
+            <h3 class="field-title">i like</h3>
+            <div class="sticker-pile">
+              <span class="sticker raised">buttholes</span>
+              <span class="sticker raised">Shitposting</span>
+              <span class="sticker raised">Femboys and twinks</span>
+              <span class="sticker raised">Ragebait</span>
+            </div>
           </div>
-        </div>
-        <div class="about-col">
-          <h3>// currently</h3>
-          <div class="stat-row">
-            <span class="stat-key">Playing</span>
-            <span class="stat-val">Minecraft</span>
-          </div>
-          <div class="stat-row">
-            <span class="stat-key">Studying</span>
-            <span class="stat-val">Cyber Security</span>
-          </div>
-          <div class="stat-row">
-            <span class="stat-key">Feeling</span>
-            <span class="stat-val">sexual</span>
+          <div>
+            <h3 class="field-title">currently</h3>
+            <div class="stat-row sunken">
+              <span class="stat-key">Playing</span>
+              <span class="stat-val">Minecraft</span>
+            </div>
+            <div class="stat-row sunken">
+              <span class="stat-key">Studying</span>
+              <span class="stat-val">Cyber Security</span>
+            </div>
+            <div class="stat-row sunken">
+              <span class="stat-key">Feeling</span>
+              <span class="stat-val">sexual</span>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
     <!-- socials -->
-    <section class="zine zine--tilt-r stagger" id="socials">
-      <span class="zine-tab zine-tab--pink">Socials</span>
-      <p style="margin-top:0.4rem; font-family:'IBM Plex Mono',monospace; font-size:0.85rem;">discord + telegram copy the handle on tap.</p>
-      <div class="link-wall">
-        <button class="link-card" data-copy="@bewford" type="button">
-          <span class="arrow">⧉</span>
-          <span class="platform">Discord</span>
-          <span class="handle">@bewford</span>
-          <span class="copy-hint">copied</span>
-        </button>
-        <button class="link-card" data-copy="@bewfy" type="button">
-          <span class="arrow">⧉</span>
-          <span class="platform">Telegram</span>
-          <span class="handle">@bewfy</span>
-          <span class="copy-hint">copied</span>
-        </button>
-        <a class="link-card" href="https://www.instagram.com/bewfart/" target="_blank" rel="noreferrer">
-          <span class="arrow">↗</span>
-          <span class="platform">Instagram</span>
-          <span class="handle">@bewfart</span>
-        </a>
-        <a class="link-card" href="https://www.youtube.com/@bewfordq" target="_blank" rel="noreferrer">
-          <span class="arrow">↗</span>
-          <span class="platform">YouTube</span>
-          <span class="handle">@bewfordq</span>
-        </a>
-        <a class="link-card" href="https://steamcommunity.com/id/bewford/" target="_blank" rel="noreferrer">
-          <span class="arrow">↗</span>
-          <span class="platform">Steam</span>
-          <span class="handle">bewford</span>
-        </a>
-        <a class="link-card" href="https://github.com/bewfordq" target="_blank" rel="noreferrer">
-          <span class="arrow">↗</span>
-          <span class="platform">GitHub</span>
-          <span class="handle">@bewfordq</span>
-        </a>
-        <a class="link-card" href="https://x.com/bewfart" target="_blank" rel="noreferrer">
-          <span class="arrow">↗</span>
-          <span class="platform">Twitter / X</span>
-          <span class="handle">@bewfart</span>
-        </a>
-        <a class="link-card" href="https://ko-fi.com/bewford" target="_blank" rel="noreferrer">
-          <span class="arrow">↗</span>
-          <span class="platform">Ko-fi</span>
-          <span class="handle">bewford</span>
-        </a>
+    <section class="win raised stagger" id="socials">
+      <div class="win-title">
+        <span>socials</span>
+        <span class="win-btns" aria-hidden="true">
+          <span class="win-btn">_</span><span class="win-btn">□</span><span class="win-btn">✕</span>
+        </span>
+      </div>
+      <div class="win-body">
+        <p class="note">discord + telegram copy the handle on tap.</p>
+        <div class="link-wall">
+          <button class="link-card raised" data-copy="@bewford" type="button">
+            <span class="arrow">⧉</span>
+            <span class="platform">Discord</span>
+            <span class="handle">@bewford</span>
+            <span class="copy-hint">copied</span>
+          </button>
+          <button class="link-card raised" data-copy="@bewfy" type="button">
+            <span class="arrow">⧉</span>
+            <span class="platform">Telegram</span>
+            <span class="handle">@bewfy</span>
+            <span class="copy-hint">copied</span>
+          </button>
+          <a class="link-card raised" href="https://www.instagram.com/bewfart/" target="_blank" rel="noreferrer">
+            <span class="arrow">↗</span>
+            <span class="platform">Instagram</span>
+            <span class="handle">@bewfart</span>
+          </a>
+          <a class="link-card raised" href="https://www.youtube.com/@bewfordq" target="_blank" rel="noreferrer">
+            <span class="arrow">↗</span>
+            <span class="platform">YouTube</span>
+            <span class="handle">@bewfordq</span>
+          </a>
+          <a class="link-card raised" href="https://steamcommunity.com/id/bewford/" target="_blank" rel="noreferrer">
+            <span class="arrow">↗</span>
+            <span class="platform">Steam</span>
+            <span class="handle">bewford</span>
+          </a>
+          <a class="link-card raised" href="https://github.com/bewfordq" target="_blank" rel="noreferrer">
+            <span class="arrow">↗</span>
+            <span class="platform">GitHub</span>
+            <span class="handle">@bewfordq</span>
+          </a>
+          <a class="link-card raised" href="https://x.com/bewfart" target="_blank" rel="noreferrer">
+            <span class="arrow">↗</span>
+            <span class="platform">Twitter / X</span>
+            <span class="handle">@bewfart</span>
+          </a>
+          <a class="link-card raised" href="https://ko-fi.com/bewford" target="_blank" rel="noreferrer">
+            <span class="arrow">↗</span>
+            <span class="platform">Ko-fi</span>
+            <span class="handle">bewford</span>
+          </a>
+        </div>
       </div>
     </section>
 
     <!-- rainbow dash zone -->
-    <section class="zine zine--tilt-r zine--cyan stagger" id="rdzone">
-      <span class="zine-tab">Rainbow Dash</span>
-      <p class="cat-zone-note">// drag them around.</p>
-      <div class="cat-grid rd-grid">
-        <div class="cat-cell"><img src="assets/rainbow-dash/rd-headphones.gif" alt="rainbow dash with headphones" class="throwable" loading="lazy" /></div>
-        <div class="cat-cell"><img src="assets/rainbow-dash/rd-excited.gif" alt="rainbow dash excited" class="throwable" loading="lazy" /></div>
-        <div class="cat-cell"><img src="assets/rainbow-dash/rd-smug.gif" alt="rainbow dash smug" class="throwable" loading="lazy" /></div>
-        <div class="cat-cell"><img src="assets/rainbow-dash/rd-grumpy.gif" alt="rainbow dash grumpy" class="throwable" loading="lazy" /></div>
-        <div class="cat-cell"><img src="assets/rainbow-dash/rd-sad.jpg" alt="rainbow dash sad" class="throwable" loading="lazy" /></div>
+    <section class="win raised stagger" id="rdzone">
+      <div class="win-title">
+        <span>rainbow dash</span>
+        <span class="win-btns" aria-hidden="true">
+          <span class="win-btn">_</span><span class="win-btn">□</span><span class="win-btn">✕</span>
+        </span>
+      </div>
+      <div class="win-body">
+        <p class="note">// drag them around.</p>
+        <div class="cat-grid rd-grid">
+          <div class="cat-cell sunken"><img src="assets/rainbow-dash/rd-headphones.gif" alt="rainbow dash with headphones" class="throwable" loading="lazy" /></div>
+          <div class="cat-cell sunken"><img src="assets/rainbow-dash/rd-excited.gif" alt="rainbow dash excited" class="throwable" loading="lazy" /></div>
+          <div class="cat-cell sunken"><img src="assets/rainbow-dash/rd-smug.gif" alt="rainbow dash smug" class="throwable" loading="lazy" /></div>
+          <div class="cat-cell sunken"><img src="assets/rainbow-dash/rd-grumpy.gif" alt="rainbow dash grumpy" class="throwable" loading="lazy" /></div>
+          <div class="cat-cell sunken"><img src="assets/rainbow-dash/rd-sad.jpg" alt="rainbow dash sad" class="throwable" loading="lazy" /></div>
+        </div>
       </div>
     </section>
 
     <!-- cat zone -->
-    <section class="zine zine--tilt-l zine--acid stagger" id="catzone">
-      <span class="zine-tab">Cat Zone</span>
-      <p class="cat-zone-note">// drag them around.</p>
-      <div class="cat-grid">
-        <div class="cat-cell"><img src="assets/bugcat/bugcat.gif" alt="bugcat gif" class="throwable" /></div>
-        <div class="cat-cell"><img src="assets/bugcat/bugcat-love.gif" alt="bugcat love gif" class="throwable" /></div>
-        <div class="cat-cell"><img src="assets/bugcat/bugcat-sticker-2.gif" alt="bugcat gif" class="throwable" /></div>
-        <div class="cat-cell"><img src="assets/bugcat/bugcat-sticker-3.gif" alt="bugcat gif" class="throwable" /></div>
-        <div class="cat-cell"><img src="assets/bugcat/bugcat-sticker-4.gif" alt="bugcat gif" class="throwable" /></div>
-        <div class="cat-cell"><img src="assets/bugcat/bugcat-waiting.gif" alt="bugcat waiting gif" class="throwable" /></div>
+    <section class="win raised stagger" id="catzone">
+      <div class="win-title">
+        <span>cat zone</span>
+        <span class="win-btns" aria-hidden="true">
+          <span class="win-btn">_</span><span class="win-btn">□</span><span class="win-btn">✕</span>
+        </span>
+      </div>
+      <div class="win-body">
+        <p class="note">// drag them around.</p>
+        <div class="cat-grid">
+          <div class="cat-cell sunken"><img src="assets/bugcat/bugcat.gif" alt="bugcat gif" class="throwable" /></div>
+          <div class="cat-cell sunken"><img src="assets/bugcat/bugcat-love.gif" alt="bugcat love gif" class="throwable" /></div>
+          <div class="cat-cell sunken"><img src="assets/bugcat/bugcat-sticker-2.gif" alt="bugcat gif" class="throwable" /></div>
+          <div class="cat-cell sunken"><img src="assets/bugcat/bugcat-sticker-3.gif" alt="bugcat gif" class="throwable" /></div>
+          <div class="cat-cell sunken"><img src="assets/bugcat/bugcat-sticker-4.gif" alt="bugcat gif" class="throwable" /></div>
+          <div class="cat-cell sunken"><img src="assets/bugcat/bugcat-waiting.gif" alt="bugcat waiting gif" class="throwable" /></div>
+        </div>
       </div>
     </section>
 
     <!-- bottom image -->
-    <div class="bottom-shot stagger">
-      <img src="assets/img/are-you-sure.jpg" alt="are you sure / yes meme" loading="lazy" />
+    <div class="bottom-shot raised stagger">
+      <div class="win-title">
+        <span>are-you-sure.jpg</span>
+        <span class="win-btns" aria-hidden="true">
+          <span class="win-btn">_</span><span class="win-btn">□</span><span class="win-btn">✕</span>
+        </span>
+      </div>
+      <div class="shot-well sunken">
+        <img src="assets/img/are-you-sure.jpg" alt="are you sure / yes meme" loading="lazy" />
+      </div>
     </div>
 
   </div>
 
+  <p class="copyright">&copy; 2025 bewford. All rights are mine i did it.</p>
+
   <footer class="site-footer">
-    <div class="footer-links">
-      <a href="https://www.instagram.com/bewfart/" target="_blank" rel="noreferrer">Instagram</a>
-      <a href="https://github.com/bewfordq" target="_blank" rel="noreferrer">GitHub</a>
-      <a href="https://ko-fi.com/bewford" target="_blank" rel="noreferrer">Ko-fi</a>
-      <a href="https://www.youtube.com/@bewfordq" target="_blank" rel="noreferrer">YouTube</a>
+    <div class="taskbar">
+      <div class="footer-links">
+        <a class="raised" href="https://www.instagram.com/bewfart/" target="_blank" rel="noreferrer">Instagram</a>
+        <a class="raised" href="https://github.com/bewfordq" target="_blank" rel="noreferrer">GitHub</a>
+        <a class="raised" href="https://ko-fi.com/bewford" target="_blank" rel="noreferrer">Ko-fi</a>
+        <a class="raised" href="https://www.youtube.com/@bewfordq" target="_blank" rel="noreferrer">YouTube</a>
+      </div>
+      <div class="tray sunken"><span id="clock">--:--</span></div>
     </div>
-    <span>&copy; 2025 bewford. All rights are mine i did it.</span>
   </footer>
 
   <script>
@@ -829,6 +825,19 @@
     megaName.addEventListener("click", scramble);
     setTimeout(scramble, 1200);
 
+    // ───────────────────── taskbar clock ─────────────────────
+    const clock = document.getElementById("clock");
+    function tick() {
+      const d = new Date();
+      let h = d.getHours();
+      const m = String(d.getMinutes()).padStart(2, "0");
+      const ampm = h >= 12 ? "PM" : "AM";
+      h = h % 12 || 12;
+      clock.textContent = `${h}:${m} ${ampm}`;
+    }
+    tick();
+    setInterval(tick, 20000);
+
     // ───────────────────── nav active state ─────────────────────
     const navLinks = document.querySelectorAll(".nav-link");
     const observer = new IntersectionObserver((entries) => {
@@ -859,8 +868,7 @@
         e.preventDefault();
         const rect = cat.getBoundingClientRect();
         const offX = e.clientX - rect.left, offY = e.clientY - rect.top;
-        // reparent to <body>: position:fixed is measured against transformed
-        // ancestors (the tilted panels), which throws the coordinates off
+        // reparent to <body> so position:fixed is measured against the viewport
         document.body.appendChild(cat);
         cat.classList.add("dragging");
         cat.style.width = rect.width + "px";
