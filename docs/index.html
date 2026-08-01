@@ -534,6 +534,75 @@
       text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
     }
 
+    /* ── fake crash screen (mobile) ── */
+    .crash {
+      position: fixed;
+      inset: 0;
+      z-index: 9500;
+      display: grid;
+      place-items: center;
+      padding: 1.2rem;
+      background: #0000aa;
+    }
+
+    .crash[hidden] { display: none; }
+
+    body.crash-open { overflow: hidden; }
+
+    .crash-dialog {
+      background: var(--face);
+      padding: 3px;
+      width: min(340px, 100%);
+    }
+
+    .crash-x {
+      font-family: inherit;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .crash-body { padding: 16px 14px 14px; }
+
+    .crash-row { display: flex; gap: 12px; align-items: flex-start; }
+
+    .crash-icon {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: #c00000;
+      color: var(--hilite);
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .crash-msg { margin: 0; line-height: 1.5; font-size: 0.9rem; }
+
+    #crashMsg2 { margin-top: 14px; }
+
+    .crash-actions { margin-top: 16px; display: flex; justify-content: center; }
+
+    .crash-btn {
+      font-family: var(--ui);
+      font-size: 0.85rem;
+      padding: 6px 16px;
+      min-width: 150px;
+      background: var(--face);
+      color: var(--dark);
+      cursor: pointer;
+    }
+
+    .crash-btn:active {
+      border-color: var(--shadow) var(--hilite) var(--hilite) var(--shadow);
+      box-shadow: inset 1px 1px 0 var(--dark), inset -1px -1px 0 var(--face-lite);
+    }
+
+    /* the second message and the button only appear after a beat */
+    .crash-step { opacity: 0; visibility: hidden; transition: opacity 0.25s ease; }
+    .crash-step.shown { opacity: 1; visibility: visible; }
+
     /* ── rain easter egg ── */
     .rain-cat {
       position: fixed;
@@ -566,6 +635,28 @@
   </style>
 </head>
 <body>
+
+  <!-- fake crash screen, shown by script on small screens only -->
+  <div class="crash" id="crashScreen" hidden>
+    <div class="crash-dialog raised" role="alertdialog" aria-labelledby="crashMsg">
+      <div class="win-title">
+        <span>error</span>
+        <span class="win-btns">
+          <button class="win-btn crash-x" id="crashClose" type="button" aria-label="close">✕</button>
+        </span>
+      </div>
+      <div class="crash-body">
+        <div class="crash-row">
+          <span class="crash-icon" aria-hidden="true">✕</span>
+          <p class="crash-msg" id="crashMsg">oh noes!!! dis pwage isnt ablwe to be woaded sowwwwy.... &gt;~&lt;</p>
+        </div>
+        <p class="crash-msg crash-step" id="crashMsg2">buttt if you say pweasee I could twy again ^°^</p>
+        <div class="crash-actions crash-step" id="crashActions">
+          <button class="crash-btn raised" id="crashBtn" type="button">pwease page ownerrr...</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div class="crt" aria-hidden="true"></div>
   <div class="grain" aria-hidden="true"></div>
@@ -786,6 +877,27 @@
   </footer>
 
   <script>
+    // ───────────────────── fake crash screen (small screens) ─────────────────────
+    // built as markup hidden by default, so it never traps anyone without JS
+    (function () {
+      if (!window.matchMedia("(max-width: 760px)").matches) return;
+      const screenEl = document.getElementById("crashScreen");
+      const steps = [document.getElementById("crashMsg2"), document.getElementById("crashActions")];
+      screenEl.hidden = false;
+      document.body.classList.add("crash-open");
+
+      const reveal = setTimeout(() => steps.forEach(s => s.classList.add("shown")), 2000);
+
+      function dismiss() {
+        clearTimeout(reveal);
+        screenEl.hidden = true;
+        document.body.classList.remove("crash-open");
+      }
+      document.getElementById("crashBtn").addEventListener("click", dismiss);
+      document.getElementById("crashClose").addEventListener("click", dismiss);
+      window.addEventListener("keydown", (e) => { if (e.key === "Escape") dismiss(); });
+    })();
+
     // ───────────────────── stagger reveal ─────────────────────
     document.querySelectorAll(".stagger").forEach((node, idx) => {
       setTimeout(() => node.classList.add("in"), 130 * idx);
