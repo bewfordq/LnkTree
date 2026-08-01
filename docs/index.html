@@ -584,6 +584,9 @@
 
     .crash-actions { margin-top: 16px; display: flex; justify-content: center; }
 
+    /* display:flex above would otherwise beat the hidden attribute */
+    .crash-actions[hidden] { display: none; }
+
     .crash-btn {
       font-family: var(--ui);
       font-size: 0.85rem;
@@ -602,6 +605,52 @@
     /* the second message and the button only appear after a beat */
     .crash-step { opacity: 0; visibility: hidden; transition: opacity 0.25s ease; }
     .crash-step.shown { opacity: 1; visibility: visible; }
+
+    /* dialog shakes: a wobble on arrival, a violent one while "loading" */
+    @keyframes crash-wobble {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      15% { transform: translate(-5px, 2px) rotate(-0.6deg); }
+      30% { transform: translate(5px, -2px) rotate(0.6deg); }
+      45% { transform: translate(-4px, -2px) rotate(-0.4deg); }
+      60% { transform: translate(4px, 2px) rotate(0.4deg); }
+      80% { transform: translate(-2px, 1px) rotate(-0.2deg); }
+    }
+
+    @keyframes crash-thrash {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      10% { transform: translate(-11px, 7px) rotate(-1.6deg); }
+      20% { transform: translate(12px, -8px) rotate(1.5deg); }
+      30% { transform: translate(-13px, -6px) rotate(-1.3deg); }
+      40% { transform: translate(10px, 9px) rotate(1.7deg); }
+      50% { transform: translate(-9px, -10px) rotate(-1.5deg); }
+      60% { transform: translate(13px, 5px) rotate(1.2deg); }
+      70% { transform: translate(-10px, 8px) rotate(-1.7deg); }
+      80% { transform: translate(11px, -9px) rotate(1.4deg); }
+      90% { transform: translate(-12px, 4px) rotate(-1.1deg); }
+    }
+
+    .crash-dialog.wobble { animation: crash-wobble 0.55s ease-in-out 2; }
+    .crash-dialog.thrash { animation: crash-thrash 0.22s linear infinite; }
+
+    /* fake loading bar */
+    .crash-load { margin-top: 14px; }
+
+    .progress {
+      height: 22px;
+      margin-top: 10px;
+      padding: 2px;
+      background: var(--hilite);
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0;
+      background: repeating-linear-gradient(90deg, var(--title-a) 0 11px, transparent 11px 14px);
+    }
+
+    @keyframes crash-fill { from { width: 0; } to { width: 100%; } }
+
+    .progress-fill.go { animation: crash-fill 1.9s steps(13, end) forwards; }
 
     /* ── rain easter egg ── */
     .rain-cat {
@@ -653,6 +702,12 @@
         <p class="crash-msg crash-step" id="crashMsg2">buttt if you say pweasee I could twy again ^°^</p>
         <div class="crash-actions crash-step" id="crashActions">
           <button class="crash-btn raised" id="crashBtn" type="button">pwease page ownerrr...</button>
+        </div>
+        <div class="crash-load" id="crashLoad" hidden>
+          <p class="crash-msg">otayyy twying again.... ٩(&gt;ᴗ&lt;)۶</p>
+          <div class="progress sunken">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -882,18 +937,46 @@
     (function () {
       if (!window.matchMedia("(max-width: 760px)").matches) return;
       const screenEl = document.getElementById("crashScreen");
+      const dialog = screenEl.querySelector(".crash-dialog");
       const steps = [document.getElementById("crashMsg2"), document.getElementById("crashActions")];
+      const loadBox = document.getElementById("crashLoad");
+      const fill = document.getElementById("progressFill");
       screenEl.hidden = false;
       document.body.classList.add("crash-open");
 
+      // wobble while it is still just the error
+      dialog.classList.add("wobble");
+      dialog.addEventListener("animationend", function off(e) {
+        if (e.animationName !== "crash-wobble") return;
+        dialog.classList.remove("wobble");
+        dialog.removeEventListener("animationend", off);
+      });
+
       const reveal = setTimeout(() => steps.forEach(s => s.classList.add("shown")), 2000);
+      let timers = [reveal];
 
       function dismiss() {
-        clearTimeout(reveal);
+        timers.forEach(clearTimeout);
         screenEl.hidden = true;
         document.body.classList.remove("crash-open");
       }
-      document.getElementById("crashBtn").addEventListener("click", dismiss);
+
+      let trying = false;
+      document.getElementById("crashBtn").addEventListener("click", () => {
+        if (trying) return;
+        trying = true;
+        clearTimeout(reveal);
+        dialog.classList.remove("wobble");
+        dialog.classList.add("thrash");
+        document.getElementById("crashActions").hidden = true;
+        loadBox.hidden = false;
+        requestAnimationFrame(() => fill.classList.add("go"));
+        timers.push(setTimeout(() => {
+          dialog.classList.remove("thrash");
+          dismiss();
+        }, 2100));
+      });
+
       document.getElementById("crashClose").addEventListener("click", dismiss);
       window.addEventListener("keydown", (e) => { if (e.key === "Escape") dismiss(); });
     })();
