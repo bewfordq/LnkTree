@@ -12,7 +12,7 @@ docs/
   assets/
     bugcat/               bugcat sticker gifs (cat zone)
     rainbow-dash/         rainbow dash gifs (dash zone)
-    img/                  profile picture and the bottom image
+    img/                  profile picture
 archive/                  images not used by the site, kept just in case
 ```
 

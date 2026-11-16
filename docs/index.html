@@ -7,11 +7,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet" />
-  <noscript>
-    <style>
-      .stagger { opacity: 1 !important; transform: none !important; }
-    </style>
-  </noscript>
   <style>
     :root {
       --desktop: #008080;
@@ -46,46 +41,6 @@
     a { color: inherit; }
     img { max-width: 100%; }
 
-    /* classic chunky scrollbar */
-    ::-webkit-scrollbar { width: 16px; height: 16px; }
-    ::-webkit-scrollbar-track {
-      background: repeating-conic-gradient(var(--face-lite) 0% 25%, var(--hilite) 0% 50%) 0 0 / 2px 2px;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: var(--face);
-      border: 2px solid;
-      border-color: var(--hilite) var(--dark) var(--dark) var(--hilite);
-    }
-
-    /* ── CRT overlays ── */
-    .crt {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 9000;
-      background: repeating-linear-gradient(0deg, rgba(0,0,0,0.06) 0 1px, transparent 1px 3px);
-      mix-blend-mode: multiply;
-      opacity: 0.55;
-    }
-
-    .grain {
-      position: fixed;
-      inset: -50%;
-      pointer-events: none;
-      z-index: 9001;
-      opacity: 0.05;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-      animation: grain-shift 0.4s steps(4) infinite;
-    }
-
-    @keyframes grain-shift {
-      0% { transform: translate(0, 0); }
-      25% { transform: translate(-2%, 3%); }
-      50% { transform: translate(3%, -2%); }
-      75% { transform: translate(-3%, -3%); }
-      100% { transform: translate(2%, 2%); }
-    }
-
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
     }
@@ -103,84 +58,9 @@
       box-shadow: inset 1px 1px 0 var(--dark), inset -1px -1px 0 var(--face-lite);
     }
 
-    /* ── scrolling ticker ── */
-    .ticker {
-      background: #000;
-      color: #00ff41;
-      font-family: var(--term);
-      font-size: 1.35rem;
-      letter-spacing: 0.04em;
-      padding: 2px 0;
-      overflow: hidden;
-      white-space: nowrap;
-      user-select: none;
-      border-bottom: 2px solid var(--dark);
-    }
-
-    .strip-track { display: inline-block; animation: marquee 26s linear infinite; }
-    .strip-track span { margin-right: 2.5rem; display: inline-block; }
-
-    @keyframes marquee {
-      from { transform: translateX(0); }
-      to { transform: translateX(-50%); }
-    }
-
-    /* ── menu bar ── */
-    .site-nav {
-      position: sticky;
-      top: 0;
-      z-index: 500;
-      background: var(--face);
-      border-bottom: 2px solid var(--shadow);
-      box-shadow: 0 1px 0 var(--hilite) inset;
-    }
-
-    .menubar {
-      width: min(1080px, calc(100% - 1rem));
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-      padding: 3px 0;
-      flex-wrap: wrap;
-    }
-
-    .menu-logo {
-      font-weight: 700;
-      font-size: 0.85rem;
-      padding: 2px 8px;
-      background: var(--title-a);
-      color: var(--hilite);
-    }
-
-    .nav-links { display: flex; gap: 2px; flex-wrap: wrap; }
-
-    .nav-links a {
-      font-size: 0.82rem;
-      text-decoration: none;
-      padding: 3px 9px;
-      color: var(--dark);
-      border: 1px solid transparent;
-    }
-
-    .nav-links a u { text-underline-offset: 2px; }
-
-    .nav-links a:hover {
-      background: var(--title-a);
-      color: var(--hilite);
-    }
-
-    .nav-links a.active {
-      border: 1px dotted var(--dark);
-      background: var(--face-lite);
-    }
-
-    .nav-links a.active:hover { background: var(--title-a); color: var(--hilite); }
-
     /* ── shell ── */
     .shell {
-      width: min(1080px, calc(100% - 1.6rem));
+      width: min(720px, calc(100% - 1.6rem));
       margin: 0 auto;
       padding: 1.4rem 0 2rem;
       display: grid;
@@ -226,22 +106,21 @@
 
     /* ── hero ── */
     .hero {
-      display: grid;
-      grid-template-columns: minmax(0, 1.15fr) minmax(210px, 0.85fr);
-      gap: 1.4rem;
+      display: flex;
+      flex-direction: column-reverse;
       align-items: center;
+      gap: 1rem;
+      text-align: center;
     }
 
     .mega-name {
       margin: 0;
-      font-size: clamp(2.8rem, 9vw, 5.4rem);
+      font-size: clamp(2.4rem, 8vw, 3.6rem);
       line-height: 1;
       font-weight: 700;
       letter-spacing: -0.02em;
       color: var(--title-a);
       text-shadow: 2px 2px 0 var(--hilite), 4px 4px 0 var(--shadow);
-      cursor: pointer;
-      user-select: none;
       word-break: break-word;
     }
 
@@ -249,6 +128,7 @@
       margin: 1rem 0 0;
       display: flex;
       flex-wrap: wrap;
+      justify-content: center;
       gap: 6px;
       font-size: 0.85rem;
     }
@@ -262,31 +142,7 @@
     .hero-sub .hl--pink { background: #ff80ff; }
     .hero-sub .hl--acid { background: #00ff00; }
 
-    .status-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      margin-top: 1rem;
-      padding: 3px 10px;
-      background: var(--face);
-      font-family: var(--term);
-      font-size: 1.05rem;
-      text-transform: uppercase;
-    }
-
-    .status-dot {
-      width: 9px;
-      height: 9px;
-      background: #00c000;
-      border: 1px solid #004000;
-      animation: blink 1.4s steps(2) infinite;
-    }
-
-    @keyframes blink { 50% { opacity: 0.2; } }
-
-    .hero-media { position: relative; justify-self: center; }
-
-    .portrait { background: var(--hilite); padding: 4px; width: min(240px, 62vw); }
+    .portrait { background: var(--hilite); padding: 4px; width: min(160px, 50vw); }
     .portrait img { display: block; width: 100%; aspect-ratio: 1/1; object-fit: cover; }
 
     .portrait-cap {
@@ -297,17 +153,7 @@
       padding-top: 2px;
     }
 
-    .hero-cat {
-      position: absolute;
-      width: clamp(70px, 15vw, 100px);
-      right: -1rem;
-      bottom: -1.4rem;
-      pointer-events: none;
-    }
-
     /* ── about ── */
-    section[id] { scroll-margin-top: 3.2rem; }
-
     .about-copy { margin: 0 0 1rem; line-height: 1.65; }
 
     .about-grid {
@@ -479,59 +325,13 @@
       filter: drop-shadow(4px 6px 3px rgba(0,0,0,0.45));
     }
 
-    /* ── bottom image ── */
-    .bottom-shot { background: var(--face); padding: 3px; }
-    .bottom-shot .shot-well { padding: 5px; background: var(--hilite); }
-    .bottom-shot img { display: block; width: 100%; }
-
-    /* ── taskbar footer ── */
-    .site-footer {
-      background: var(--face);
-      padding: 3px;
-      margin-top: 0.4rem;
-      border-top: 2px solid var(--hilite);
-    }
-
-    .taskbar {
-      width: min(1080px, calc(100% - 0.6rem));
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .footer-links { display: flex; gap: 4px; flex-wrap: wrap; flex: 1; }
-
-    .footer-links a {
-      padding: 4px 12px;
-      background: var(--face);
-      font-size: 0.82rem;
-      text-decoration: none;
-      color: var(--dark);
-    }
-
-    .footer-links a:active {
-      border-color: var(--shadow) var(--hilite) var(--hilite) var(--shadow);
-      box-shadow: inset 1px 1px 0 var(--dark), inset -1px -1px 0 var(--face-lite);
-    }
-
-    .tray {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 3px 9px;
-      font-family: var(--term);
-      font-size: 1.05rem;
-    }
-
     .copyright {
       text-align: center;
       color: var(--hilite);
       font-family: var(--term);
       font-size: 1.05rem;
-      padding: 0.7rem 1rem 1.1rem;
-      text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+      padding: 0 1rem 1.4rem;
+      margin: 0;
     }
 
     /* ── fake crash screen (mobile) ── */
@@ -664,22 +464,13 @@
 
     @keyframes rain-fall { to { transform: translateY(120vh) rotate(360deg); } }
 
-    /* ── reveal ── */
-    .stagger { opacity: 0; transform: translateY(14px); transition: opacity 0.35s ease, transform 0.35s ease; }
-    .stagger.in { opacity: 1; transform: none; }
-
     @media (max-width: 860px) {
-      .hero { grid-template-columns: 1fr; }
-      .hero-media { margin-top: 0.6rem; }
       .about-grid { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 520px) {
       body { font-size: 13px; }
-      .nav-links a { font-size: 0.75rem; padding: 3px 6px; }
       .win-body { padding: 10px; }
-      .taskbar { justify-content: center; }
-      .tray { display: none; }
     }
   </style>
 </head>
@@ -713,65 +504,35 @@
     </div>
   </div>
 
-  <div class="crt" aria-hidden="true"></div>
-  <div class="grain" aria-hidden="true"></div>
-
-  <div class="ticker" aria-hidden="true">
-    <div class="strip-track" id="stripTop"></div>
-  </div>
-
-  <nav class="site-nav" id="siteNav">
-    <div class="menubar">
-      <span class="menu-logo">bewford.exe</span>
-      <div class="nav-links">
-        <a href="#about" class="nav-link"><u>A</u>bout</a>
-        <a href="#socials" class="nav-link"><u>S</u>ocials</a>
-        <a href="#rdzone" class="nav-link"><u>D</u>ash</a>
-        <a href="#catzone" class="nav-link"><u>C</u>at Zone</a>
-      </div>
-    </div>
-  </nav>
-
   <div class="shell">
 
     <!-- hero -->
-    <section class="win raised stagger" id="home">
+    <section class="win raised" id="home">
       <div class="win-title">
         <span>bewford.exe</span>
-        <span class="win-btns" aria-hidden="true">
-          <span class="win-btn">_</span><span class="win-btn">□</span><span class="win-btn">✕</span>
-        </span>
       </div>
       <div class="win-body hero">
         <div>
-          <h1 class="mega-name" id="megaName" title="click me">bewford</h1>
+          <h1 class="mega-name">bewford</h1>
           <p class="hero-sub">
             <span class="hl">cyber security student</span>
             <span class="hl hl--pink">freaklord</span>
             <span class="hl hl--acid">lowk the funniest feminine male</span>
           </p>
-          <div class="status-badge sunken">
-            <span class="status-dot"></span>
-            <span>online</span>
-          </div>
         </div>
         <div class="hero-media">
           <div class="portrait sunken">
             <img src="assets/img/honksho.jpg" alt="bewford's profile picture" />
             <span class="portrait-cap">@bewford</span>
           </div>
-          <img src="assets/bugcat/bugcat-sticker-1.gif" alt="" class="hero-cat" aria-hidden="true" />
         </div>
       </div>
     </section>
 
     <!-- about -->
-    <section class="win raised stagger" id="about">
+    <section class="win raised" id="about">
       <div class="win-title">
         <span>about me</span>
-        <span class="win-btns" aria-hidden="true">
-          <span class="win-btn">_</span><span class="win-btn">□</span><span class="win-btn">✕</span>
-        </span>
       </div>
       <div class="win-body">
         <p class="about-copy">hello i am bewford. i keep getting banned on instagram. i like to play video games. i like to play minecraft and stuff</p>
@@ -805,12 +566,9 @@
     </section>
 
     <!-- socials -->
-    <section class="win raised stagger" id="socials">
+    <section class="win raised" id="socials">
       <div class="win-title">
         <span>socials</span>
-        <span class="win-btns" aria-hidden="true">
-          <span class="win-btn">_</span><span class="win-btn">□</span><span class="win-btn">✕</span>
-        </span>
       </div>
       <div class="win-body">
         <p class="note">discord + telegram copy the handle on tap.</p>
@@ -862,12 +620,9 @@
     </section>
 
     <!-- rainbow dash zone -->
-    <section class="win raised stagger" id="rdzone">
+    <section class="win raised" id="rdzone">
       <div class="win-title">
         <span>rainbow dash</span>
-        <span class="win-btns" aria-hidden="true">
-          <span class="win-btn">_</span><span class="win-btn">□</span><span class="win-btn">✕</span>
-        </span>
       </div>
       <div class="win-body">
         <p class="note">// drag them around.</p>
@@ -882,12 +637,9 @@
     </section>
 
     <!-- cat zone -->
-    <section class="win raised stagger" id="catzone">
+    <section class="win raised" id="catzone">
       <div class="win-title">
         <span>cat zone</span>
-        <span class="win-btns" aria-hidden="true">
-          <span class="win-btn">_</span><span class="win-btn">□</span><span class="win-btn">✕</span>
-        </span>
       </div>
       <div class="win-body">
         <p class="note">// drag them around.</p>
@@ -902,34 +654,10 @@
       </div>
     </section>
 
-    <!-- bottom image -->
-    <div class="bottom-shot raised stagger">
-      <div class="win-title">
-        <span>are-you-sure.jpg</span>
-        <span class="win-btns" aria-hidden="true">
-          <span class="win-btn">_</span><span class="win-btn">□</span><span class="win-btn">✕</span>
-        </span>
-      </div>
-      <div class="shot-well sunken">
-        <img src="assets/img/are-you-sure.jpg" alt="are you sure / yes meme" loading="lazy" />
-      </div>
-    </div>
-
   </div>
 
   <p class="copyright">&copy; 2025 bewford. All rights are mine i did it.</p>
 
-  <footer class="site-footer">
-    <div class="taskbar">
-      <div class="footer-links">
-        <a class="raised" href="https://www.instagram.com/bewfart/" target="_blank" rel="noreferrer">Instagram</a>
-        <a class="raised" href="https://github.com/bewfordq" target="_blank" rel="noreferrer">GitHub</a>
-        <a class="raised" href="https://ko-fi.com/bewford" target="_blank" rel="noreferrer">Ko-fi</a>
-        <a class="raised" href="https://www.youtube.com/@bewfordq" target="_blank" rel="noreferrer">YouTube</a>
-      </div>
-      <div class="tray sunken"><span id="clock">--:--</span></div>
-    </div>
-  </footer>
 
   <script>
     // ───────────────────── fake crash screen (small screens) ─────────────────────
@@ -980,70 +708,6 @@
       document.getElementById("crashClose").addEventListener("click", dismiss);
       window.addEventListener("keydown", (e) => { if (e.key === "Escape") dismiss(); });
     })();
-
-    // ───────────────────── stagger reveal ─────────────────────
-    document.querySelectorAll(".stagger").forEach((node, idx) => {
-      setTimeout(() => node.classList.add("in"), 130 * idx);
-    });
-
-    // ───────────────────── marquee strips ─────────────────────
-    const PHRASES = {
-      stripTop: "★ bewford ★ cyber security student ★ minecraft ★ ",
-    };
-    Object.entries(PHRASES).forEach(([id, text]) => {
-      const el = document.getElementById(id);
-      const chunk = `<span>${text.trim()}</span>`.repeat(6);
-      el.innerHTML = chunk + chunk; // duplicated for the -50% loop
-    });
-
-    // ───────────────────── glitch scramble on name ─────────────────────
-    const megaName = document.getElementById("megaName");
-    const REAL = "bewford";
-    const GLYPHS = "!<>-_\\/[]{}—=+*^?#₿ЖФ";
-    let scrambling = false;
-    function scramble() {
-      if (scrambling) return;
-      scrambling = true;
-      let frame = 0;
-      const timer = setInterval(() => {
-        frame++;
-        megaName.textContent = REAL.split("").map((ch, i) =>
-          frame > i * 2 + 6 ? ch : GLYPHS[Math.floor(Math.random() * GLYPHS.length)]
-        ).join("");
-        if (frame > REAL.length * 2 + 8) {
-          clearInterval(timer);
-          megaName.textContent = REAL;
-          scrambling = false;
-        }
-      }, 45);
-    }
-    megaName.addEventListener("click", scramble);
-    setTimeout(scramble, 1200);
-
-    // ───────────────────── taskbar clock ─────────────────────
-    const clock = document.getElementById("clock");
-    function tick() {
-      const d = new Date();
-      let h = d.getHours();
-      const m = String(d.getMinutes()).padStart(2, "0");
-      const ampm = h >= 12 ? "PM" : "AM";
-      h = h % 12 || 12;
-      clock.textContent = `${h}:${m} ${ampm}`;
-    }
-    tick();
-    setInterval(tick, 20000);
-
-    // ───────────────────── nav active state ─────────────────────
-    const navLinks = document.querySelectorAll(".nav-link");
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        navLinks.forEach((l) => l.classList.remove("active"));
-        const active = document.querySelector(`.nav-link[href="#${entry.target.id}"]`);
-        if (active) active.classList.add("active");
-      });
-    }, { threshold: 0.4 });
-    document.querySelectorAll("section[id]").forEach((s) => observer.observe(s));
 
     // ───────────────────── copy handles ─────────────────────
     document.querySelectorAll(".link-card[data-copy]").forEach((card) => {
@@ -1124,19 +788,6 @@
       }
     }
 
-    // ───────────────────── konami code ─────────────────────
-    const KONAMI = ["ArrowUp","ArrowUp","ArrowDown","ArrowDown","ArrowLeft","ArrowRight","ArrowLeft","ArrowRight","b","a"];
-    let kIdx = 0;
-    window.addEventListener("keydown", (e) => {
-      kIdx = (e.key === KONAMI[kIdx]) ? kIdx + 1 : (e.key === KONAMI[0] ? 1 : 0);
-      if (kIdx === KONAMI.length) {
-        kIdx = 0;
-        catRain();
-        document.body.style.transition = "filter 0.3s ease";
-        document.body.style.filter = "hue-rotate(180deg)";
-        setTimeout(() => { document.body.style.filter = ""; }, 4000);
-      }
-    });
   </script>
 </body>
 </html>
